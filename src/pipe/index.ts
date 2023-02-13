@@ -1,4 +1,4 @@
-interface Pipe {
+export interface Pipe {
   <A>(value: A): A;
   <A, B>(value: A, fn1: (input: A) => B): B;
   <A, B, C>(value: A, fn1: (input: A) => B, fn2: (input: B) => C): C;
