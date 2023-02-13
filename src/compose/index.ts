@@ -1,3 +1,21 @@
+/**
+ * @description Composes functions from left to right.
+ *
+ * @example
+ * import { compose } from "https://deno.land/x/fp_/mod.ts";
+ *
+ * type Person = { name: string; age: number };
+ *
+ * const fn = compose(
+ *   (p: Person) => ({ ...p, age: p.age + 1 }),
+ *   (p) => ({ ...p, name: p.name.toUpperCase() })
+ * );
+ *
+ *
+ * const result = fn({ name: "John", age: 20 });
+ *
+ * assertEquals(result, { name: "JOHN", age: 21 });
+ */
 export function compose<A extends ReadonlyArray<unknown>, B>(
   fn1: (...a: A) => B
 ): (...a: A) => B;

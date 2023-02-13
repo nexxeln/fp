@@ -1,3 +1,20 @@
+/**
+ * @description Pipes the value of an expression into a pipeline of functions.
+ *
+ * @example
+ * import { pipe } from "https://deno.land/x/fp_/mod.ts";
+ *
+ * type Person = { name: string; age: number };
+ *
+ * const result = pipe(
+ *   { name: "John", age: 20}
+ *   (p: Person) => ({ ...p, age: p.age + 1 }),
+ *   (p) => ({ ...p, name: p.name.toUpperCase() })
+ * );
+ *
+ * assertEquals(result, { name: "JOHN", age: 21 });
+ *
+ */
 export function pipe<A>(value: A): A;
 export function pipe<A, B>(value: A, fn1: (input: A) => B): B;
 export function pipe<A, B, C>(

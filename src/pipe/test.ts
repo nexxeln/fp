@@ -43,6 +43,18 @@ Deno.test("pipe - array manipulation", () => {
   assertEquals(result, [2, 4, 6]);
 });
 
+Deno.test("pipe - object manipulation", () => {
+  type Person = { name: string; age: number };
+
+  const result = pipe(
+    { name: "John", age: 20 },
+    (p: Person) => ({ ...p, age: p.age + 1 }),
+    (p) => ({ ...p, name: p.name.toUpperCase() })
+  );
+
+  assertEquals(result, { name: "JOHN", age: 21 });
+});
+
 Deno.test("pipe - empty function list", () => {
   const result = pipe("hello");
 

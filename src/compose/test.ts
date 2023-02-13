@@ -49,9 +49,10 @@ Deno.test("compose - array manipulation", () => {
 
 Deno.test("compose - object manipulation", () => {
   type Person = { name: string; age: number };
+
   const fn = compose(
-    (obj: Person) => ({ ...obj, age: obj.age + 1 }),
-    (obj) => ({ ...obj, name: obj.name.toUpperCase() })
+    (p: Person) => ({ ...p, age: p.age + 1 }),
+    (p) => ({ ...p, name: p.name.toUpperCase() })
   );
 
   const result = fn({ name: "John", age: 20 });
