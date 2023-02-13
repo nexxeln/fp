@@ -1,3 +1,3 @@
-import { pipe, Pipe } from "./src/pipe/index.ts";
+import { pipe, pipe } from "./src/pipe/index.ts";
 
-export { pipe, type Pipe };
+export { pipe, type pipe };
