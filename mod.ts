@@ -1,3 +1,4 @@
-import { pipe, pipe } from "./src/pipe/index.ts";
+import { compose } from "./src/compose/index.ts";
+import { pipe } from "./src/pipe/index.ts";
 
-export { pipe, type pipe };
+export { compose, pipe };
