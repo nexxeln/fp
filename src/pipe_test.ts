@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 
-import { pipe } from "./index.ts";
+import { pipe } from "./pipe.ts";
 
 // chatgpt wrote these tests because i cba to write them myself
 

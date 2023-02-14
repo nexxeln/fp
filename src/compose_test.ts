@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 
-import { compose } from "./index.ts";
+import { compose } from "./compose.ts";
 
 Deno.test("compose - single function", () => {
   const addOne = (n: number) => n + 1;

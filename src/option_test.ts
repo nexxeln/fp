@@ -1,7 +1,7 @@
 import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 
-import * as O from "./index.ts";
-import { pipe } from "../pipe/index.ts";
+import * as O from "./option.ts";
+import { pipe } from "./pipe.ts";
 
 Deno.test("Option: some", () => {
   const some = O.some(1);

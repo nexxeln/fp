@@ -1,4 +1,4 @@
-import { isFunction, isObject, isString } from "../typeguards/index.ts";
+import { isFunction, isObject, isString } from "./typeguards.ts";
 
 export type Some<T> = { readonly type: "some"; readonly value: T };
 export type None = { readonly type: "none" };
