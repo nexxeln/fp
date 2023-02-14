@@ -247,3 +247,8 @@ export function zip<T, U>(
     return zipOptions(optionOrOther as Option<T>, other);
   }
 }
+
+// conversions
+export function toNullable<T>(option: Option<T>): T | null {
+  return isSome(option) ? option.value : null;
+}

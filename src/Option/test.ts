@@ -158,3 +158,8 @@ Deno.test("Option - tap", () => {
 
   assertEquals(x, 1);
 });
+
+Deno.test("Option - toNullable", () => {
+  assertEquals(O.toNullable(O.some(1)), 1);
+  assertEquals(O.toNullable(O.none), null);
+});
