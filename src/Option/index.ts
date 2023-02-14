@@ -6,6 +6,14 @@ export type None = { readonly type: "none" };
 export type Option<T> = Some<T> | None;
 
 // basic
+export function isOption<T>(value: unknown): value is Option<T> {
+  return (
+    isObject(value) &&
+    typeof (value as { type?: string }).type === "string" &&
+    ["some", "none"].includes((value as { type: string }).type)
+  );
+}
+
 export const isSome = <T>(option: Option<T>): option is Some<T> =>
   option.type === "some";
 
