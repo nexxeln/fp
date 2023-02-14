@@ -1,4 +1,4 @@
-import { isFunction } from "../typeguards/index.ts";
+import { isFunction, isObject, isString } from "../typeguards/index.ts";
 
 export type Some<T> = { readonly type: "some"; readonly value: T };
 export type None = { readonly type: "none" };
@@ -52,13 +52,26 @@ export const fromPromise = async <T>(
 };
 
 // destructors
-export const expect = <T>(option: Option<T>, message: string): T => {
-  if (isNone(option)) {
-    throw new Error(message);
-  }
+export function expect<T>(option: Option<T>, message: string): T;
+export function expect<T>(message: string): (option: Option<T>) => T;
+export function expect<T>(
+  optionOrMessage: Option<T> | string,
+  message?: string
+): T | ((option: Option<T>) => T) {
+  if (isString(optionOrMessage)) {
+    const message = optionOrMessage;
 
-  return option.value;
-};
+    return (option) => expect(option, message);
+  } else {
+    const option = optionOrMessage;
+
+    if (isSome(option)) {
+      return option.value;
+    } else {
+      throw new Error(message);
+    }
+  }
+}
 
 export const unwrap = <T>(option: Option<T>): T => {
   if (isNone(option)) {
@@ -68,11 +81,39 @@ export const unwrap = <T>(option: Option<T>): T => {
   return option.value;
 };
 
-export const unwrapOr = <T>(option: Option<T>, defaultValue: T): T =>
-  isNone(option) ? defaultValue : option.value;
+export function unwrapOr<T>(option: Option<T>, defaultValue: T): T;
+export function unwrapOr<T>(defaultValue: T): (option: Option<T>) => T;
+export function unwrapOr<T>(
+  optionOrValue: Option<T> | T,
+  defaultValue?: T
+): T | ((option: Option<T>) => T) {
+  if (isOption(optionOrValue)) {
+    const option = optionOrValue;
 
-export const unwrapOrElse = <T>(option: Option<T>, fn: () => T): T =>
-  isNone(option) ? fn() : option.value;
+    return isSome(option) ? option.value : defaultValue!;
+  } else {
+    const value = optionOrValue;
+
+    return (option) => (isSome(option) ? option.value : value);
+  }
+}
+
+export function unwrapOrElse<T>(option: Option<T>, fn: () => T): T;
+export function unwrapOrElse<T>(fn: () => T): (option: Option<T>) => T;
+export function unwrapOrElse<T>(
+  optionOrFn: Option<T> | (() => T),
+  fn?: () => T
+): T | ((option: Option<T>) => T) {
+  if (isFunction(optionOrFn)) {
+    const fn = optionOrFn;
+
+    return (option) => (isSome(option) ? option.value : fn());
+  } else {
+    const option = optionOrFn;
+
+    return isSome(option) ? option.value : fn!();
+  }
+}
 
 // combinators
 export function map<T, U>(
