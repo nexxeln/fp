@@ -224,23 +224,17 @@ export function tap<T>(
   }
 }
 
-export function zip<T, U>(
-  option: Option<T>,
-  other: Option<U>
-): Option<readonly [T, U]>;
+export function zip<T, U>(option: Option<T>, other: Option<U>): Option<[T, U]>;
 export function zip<T, U>(
   other: Option<U>
-): (option: Option<T>) => Option<readonly [T, U]>;
+): (option: Option<T>) => Option<[T, U]>;
 export function zip<T, U>(
   optionOrOther: Option<T> | Option<U>,
   other?: Option<U>
-): Option<readonly [T, U]> | ((option: Option<T>) => Option<readonly [T, U]>) {
-  const zipOptions = (
-    opt1: Option<T>,
-    opt2: Option<U>
-  ): Option<readonly [T, U]> => {
+): Option<[T, U]> | ((option: Option<T>) => Option<[T, U]>) {
+  const zipOptions = (opt1: Option<T>, opt2: Option<U>): Option<[T, U]> => {
     if (isSome(opt1) && isSome(opt2)) {
-      return some([opt1.value, opt2.value] as const);
+      return some([opt1.value, opt2.value]);
     } else {
       return none;
     }
