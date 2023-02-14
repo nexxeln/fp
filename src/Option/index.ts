@@ -3,12 +3,14 @@ export type None = { readonly type: "none" };
 
 export type Option<T> = Some<T> | None;
 
+// basic
 export const isSome = <T>(option: Option<T>): option is Some<T> =>
   option.type === "some";
 
 export const isNone = <T>(option: Option<T>): option is None =>
   option.type === "none";
 
+// constructors
 export const some = <T>(value: T): Option<T> => ({ type: "some", value });
 
 export const none: Option<never> = { type: "none" };
@@ -38,3 +40,26 @@ export const fromPromise = async <T>(
     return none;
   }
 };
+
+// destructors
+export const expect = <T>(option: Option<T>, message: string): T => {
+  if (isNone(option)) {
+    throw new Error(message);
+  }
+
+  return option.value;
+};
+
+export const unwrap = <T>(option: Option<T>): T => {
+  if (isNone(option)) {
+    throw new Error("Expected a value but got none");
+  }
+
+  return option.value;
+};
+
+export const unwrapOr = <T>(option: Option<T>, defaultValue: T): T =>
+  isNone(option) ? defaultValue : option.value;
+
+export const unwrapOrElse = <T>(option: Option<T>, fn: () => T): T =>
+  isNone(option) ? fn() : option.value;
