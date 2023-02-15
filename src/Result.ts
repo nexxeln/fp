@@ -53,3 +53,25 @@ export function fromNullable<T, E>(
 
   return ok(valueOrError as NonNullable<T>);
 }
+
+export function fromFalsy<T, E>(
+  value: T,
+  error: NonNullable<E>
+): Result<NonNullable<T>, E>;
+export function fromFalsy<T, E>(
+  error: NonNullable<E>
+): (value: T) => Result<NonNullable<T>, E>;
+export function fromFalsy<T, E>(
+  valueOrError: T | NonNullable<E>,
+  error?: NonNullable<E>
+): Result<NonNullable<T>, E> | ((value: T) => Result<NonNullable<T>, E>) {
+  if (error === null || error === undefined) {
+    return (value: T) => fromFalsy(value, valueOrError as NonNullable<E>);
+  }
+
+  if (!valueOrError) {
+    return err(error);
+  }
+
+  return ok(valueOrError as NonNullable<T>);
+}
