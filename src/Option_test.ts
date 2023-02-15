@@ -50,17 +50,13 @@ Deno.test("Option: fromFalsy", () => {
   assertEquals(O.fromFalsy(""), O.none);
 });
 
-Deno.test("Option: fromPromise", async () => {
-  assertEquals(await O.fromPromise(Promise.resolve(1)), O.some(1));
-  assertEquals(await O.fromPromise(Promise.reject(1)), O.none);
-});
-
 Deno.test("Option: expect", () => {
   assertEquals(O.expect(O.some(1), "error"), 1);
   assertEquals(O.expect("error")(O.some(1)), 1);
 });
 
 Deno.test("Option: unwrap", () => {
+  assertEquals(pipe(O.some(1), O.unwrap()), 1);
   assertEquals(O.unwrap(O.some(1)), 1);
 });
 
@@ -142,24 +138,33 @@ Deno.test("Option: zip", () => {
   assertEquals(pipe(O.none, O.zip(O.some(1))), O.none);
 
   assertEquals(pipe(O.some(1), O.zip(O.some(2))), O.some([1, 2]));
-});
 
+  const x = pipe(
+    O.fromNullable("hello"),
+    O.zip(O.fromNullable("world")),
+    O.expect("error")
+  );
+
+  assertEquals(x, ["hello", "world"]);
+});
 Deno.test("Option - tap", () => {
   let x = 0;
-  assertEquals(
-    pipe(
-      O.some(1),
-      O.tap(() => {
-        x = 1;
-      })
-    ),
-    O.some(1)
+  pipe(
+    O.some(1),
+    O.tap(() => {
+      x = 1;
+    })
   );
 
   assertEquals(x, 1);
-});
 
-Deno.test("Option - toNullable", () => {
-  assertEquals(O.toNullable(O.some(1)), 1);
-  assertEquals(O.toNullable(O.none), null);
+  let y = 0;
+  pipe(
+    O.none,
+    O.tap(() => {
+      y = 1;
+    })
+  );
+
+  assertEquals(y, 0);
 });

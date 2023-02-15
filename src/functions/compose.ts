@@ -1,9 +1,8 @@
 /**
- * @description Composes functions from left to right.
+ * Composes functions into one function from left to right.
  *
  * @example
- * import { compose } from "https://deno.land/x/fp_/mod.ts";
- *
+ * ```
  * type Person = { name: string; age: number };
  *
  * const fn = compose(
@@ -15,6 +14,7 @@
  * const result = fn({ name: "John", age: 20 });
  *
  * assertEquals(result, { name: "JOHN", age: 21 });
+ * ```
  */
 export function compose<A extends ReadonlyArray<unknown>, B>(
   fn1: (...a: A) => B
