@@ -28,3 +28,28 @@ export function isOk<T, E>(result: Result<T, E>): result is Ok<T> {
 export function isErr<T, E>(result: Result<T, E>): result is Err<E> {
   return result.type === "err";
 }
+
+export function fromNullable<T, E>(
+  value: T | null | undefined,
+  error: NonNullable<E>
+): Result<NonNullable<T>, E>;
+export function fromNullable<T, E>(
+  error: NonNullable<E>
+): (value: T | null | undefined) => Result<NonNullable<T>, E>;
+export function fromNullable<T, E>(
+  valueOrError: T | null | undefined | NonNullable<E>,
+  error?: NonNullable<E>
+):
+  | Result<NonNullable<T>, E>
+  | ((value: T | null | undefined) => Result<NonNullable<T>, E>) {
+  if (error === null || error === undefined) {
+    return (value: T | null | undefined) =>
+      fromNullable(value, valueOrError as NonNullable<E>);
+  }
+
+  if (valueOrError === null || valueOrError === undefined) {
+    return err(error);
+  }
+
+  return ok(valueOrError as NonNullable<T>);
+}
