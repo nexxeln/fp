@@ -274,6 +274,7 @@ export function unwrapOrElse<T>(
  *
  * assertEquals(x, 4);
  * assertEquals(y, 0);
+ * ```
  */
 export function map<T, U>(
   option: Option<T>,
@@ -375,6 +376,7 @@ export function flatMap<T, U>(
  * );
  *
  * assertEquals(x, 4);
+ * ```
  */
 export function match<T, U>(
   option: Option<T>,
