@@ -1,7 +1,7 @@
 import { isObject } from "./Typeguards.ts";
 
-type Ok<T> = { type: "ok"; value: T };
-type Err<E> = { type: "err"; value: E };
+export type Ok<T> = { type: "ok"; value: T };
+export type Err<E> = { type: "err"; value: E };
 
 export type Result<T, E> = Ok<T> | Err<E>;
 
