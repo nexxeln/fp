@@ -1,4 +1,4 @@
-import { isObject } from "./Typeguards.ts";
+import { isFunction, isObject, isString } from "./Typeguards.ts";
 
 export type Ok<T> = { type: "ok"; value: T };
 export type Err<E> = { type: "err"; value: E };
@@ -158,4 +158,155 @@ export function fromFalsy<T, E>(
   }
 
   return ok(valueOrError as NonNullable<T>);
+}
+
+/**
+ * Unwraps a Result of Ok type. If the Result is of Err type, throws an error with the error message.
+ *
+ * @param result - The Result to unwrap
+ * @param message - The error message to throw if the Result is of Err type
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   R.fromNullable(3, "error"),
+ *   R.expect("error")
+ * ); // 3
+ *
+ * const y = pipe(
+ *   R.fromNullable(null, "error"),
+ *   R.expect("error message")
+ * ); // throws error with message "error message"
+ */
+export function expect<T, E>(result: Result<T, E>, message: string): T;
+export function expect<T, E>(message: string): (result: Result<T, E>) => T;
+export function expect<T, E>(
+  resultOrMessage: Result<T, E> | string,
+  message?: string
+): T | ((result: Result<T, E>) => T) {
+  if (isString(resultOrMessage)) {
+    const message = resultOrMessage;
+
+    return (result) => expect(result, message);
+  } else {
+    const result = resultOrMessage;
+
+    if (isOk(result)) {
+      return result.value;
+    } else {
+      throw new Error(message);
+    }
+  }
+}
+
+/**
+ * Unwraps a Result of Ok type. If the Result is of Err type, throws an error.
+ *
+ * @param result - The Result to unwrap
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   R.fromNullable(3, "error"),
+ *   R.unwrap()
+ * ); // 3
+ *
+ * const y = pipe(
+ *   R.fromNullable(null, "error"),
+ *   R.unwrap()
+ * ); // throws error with message "Cannot unwrap Err value: error"
+ * ```
+ */
+export function unwrap<T, E>(result: Result<T, E>): T;
+export function unwrap<T, E>(): (result: Result<T, E>) => T;
+export function unwrap<T, E>(
+  result?: Result<T, E>
+): T | ((result: Result<T, E>) => T) {
+  if (result === null || result === undefined) {
+    return (result: Result<T, E>) => unwrap(result);
+  }
+
+  if (isOk(result)) {
+    return result.value;
+  }
+
+  throw new Error(`Cannot unwrap Err value: ${result.value}`);
+}
+
+/**
+ * Unwraps a Result of Ok type. If the Result is of Err type, returns the default value.
+ *
+ * @param result - The Result to unwrap
+ * @param defaultValue - The default value to return if the Result is of Err type
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   R.fromNullable(3, "error"),
+ *   R.unwrapOr(0)
+ * );
+ *
+ * const y = pipe(
+ *   R.fromNullable(null, "error"),
+ *   R.unwrapOr(0)
+ * );
+ *
+ * assertEquals(x, 3);
+ * assertEquals(y, 0);
+ * ```
+ */
+export function unwrapOr<T, E>(result: Result<T, E>, defaultValue: T): T;
+export function unwrapOr<T, E>(defaultValue: T): (result: Result<T, E>) => T;
+export function unwrapOr<T, E>(
+  resultOrDefaultValue: Result<T, E> | T,
+  defaultValue?: T
+): T | ((result: Result<T, E>) => T) {
+  if (isResult(resultOrDefaultValue)) {
+    const result = resultOrDefaultValue;
+
+    return isOk(result) ? result.value : defaultValue!;
+  } else {
+    const defaultValue = resultOrDefaultValue;
+
+    return (result) => (isOk(result) ? result.value : defaultValue);
+  }
+}
+
+/**
+ * Unwraps a Result of Ok type. If the Result is of Err type, calls the function to get the default value.
+ *
+ * @param result - The Result to unwrap
+ * @param fn - The function to call if the Result is of Err type
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   R.fromNullable(3, "error"),
+ *   R.unwrapOrElse(() => 0)
+ * );
+ *
+ * const y = pipe(
+ *   R.fromNullable(null, "error"),
+ *   R.unwrapOrElse(() => 0)
+ * );
+ *
+ * assertEquals(x, 3);
+ * assertEquals(y, 0);
+ * ```
+ */
+export function unwrapOrElse<T, E>(result: Result<T, E>, fn: () => T): T;
+export function unwrapOrElse<T, E>(fn: () => T): (result: Result<T, E>) => T;
+export function unwrapOrElse<T, E>(
+  optionOrFn: Result<T, E> | (() => T),
+  fn?: () => T
+): T | ((result: Result<T, E>) => T) {
+  if (isFunction(optionOrFn)) {
+    const fn = optionOrFn;
+
+    return (result) => (isOk(result) ? result.value : fn());
+  } else {
+    const result = optionOrFn;
+
+    return isOk(result) ? result.value : fn!();
+  }
 }
