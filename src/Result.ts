@@ -310,3 +310,49 @@ export function unwrapOrElse<T, E>(
     return isOk(result) ? result.value : fn!();
   }
 }
+
+/**
+ * Maps a Result of Ok type. If the Result is of Err type, leaves it untouched.
+ *
+ * @param result - The Result to map over
+ * @param fn - The function to map over the Result
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   R.fromNullable(3, "error"),
+ *   R.map((x) => x + 1),
+ *   R.unwrapOr(0)
+ * );
+ *
+ * const y = pipe(
+ *   R.fromNullable(null, "error"),
+ *   R.map((x) => x + 1),
+ *   R.unwrapOr(0)
+ * );
+ *
+ * assertEquals(x, 4);
+ * assertEquals(y, 0);
+ * ```
+ */
+export function map<T, E, U>(
+  result: Result<T, E>,
+  fn: (value: T) => U
+): Result<U, E>;
+export function map<T, E, U>(
+  fn: (value: T) => U
+): (result: Result<T, E>) => Result<U, E>;
+export function map<T, E, U>(
+  resultOrFn: Result<T, E> | ((value: T) => U),
+  fn?: (value: T) => U
+): Result<U, E> | ((result: Result<T, E>) => Result<U, E>) {
+  if (isFunction(resultOrFn)) {
+    const mapFn = resultOrFn;
+
+    return (result) => map(result, mapFn);
+  } else {
+    const result = resultOrFn;
+
+    return isOk(result) ? ok(fn!(result.value)) : result;
+  }
+}

@@ -83,3 +83,20 @@ Deno.test("Result - unwrapOrElse", () => {
   assertEquals(x, 1);
   assertEquals(y, 2);
 });
+
+Deno.test("Result - map", () => {
+  const x = pipe(
+    R.fromNullable(1, "error"),
+    R.map((x) => x + 1),
+    R.unwrapOr(0)
+  );
+
+  const y = pipe(
+    R.fromNullable(null, "error"),
+    R.map((x) => x + 1),
+    R.unwrapOr(0)
+  );
+
+  assertEquals(x, 2);
+  assertEquals(y, 0);
+});
