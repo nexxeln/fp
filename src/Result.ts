@@ -356,3 +356,59 @@ export function map<T, E, U>(
     return isOk(result) ? ok(fn!(result.value)) : result;
   }
 }
+
+/**
+ * Maps a Result of Ok type. If the Result is of Err type, leaves it untouched. The map function must return a Result.
+ *
+ * @param result - The Result to map over
+ * @param fn - The function to map over the Result. Must return a Result.
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   R.fromNullable(10, "error"),
+ *   // divide 100 by number, or return error if number is 0
+ *   R.flatMap(
+ *     (n) => n === 0 ? R.err("Cannot divide by 0") : R.ok(100 / n)
+ *   ),
+ *   R.unwrapOr(0)
+ * );
+ *
+ * const y = pipe(
+ *   R.fromNullable(0, "error"),
+ *   R.flatMap(
+ *     (n) => n === 0 ? R.err("Cannot divide by 0") : R.ok(100 / n)
+ *   ),
+ *   R.unwrapOr(0)
+ * );
+ *
+ * assertEquals(x, 10);
+ * assertEquals(y, 0);
+ */
+export function flatMap<T, E, U>(
+  result: Result<T, E>,
+  fn: (value: T) => Result<U, E>
+): Result<U, E>;
+export function flatMap<T, E, U>(
+  fn: (value: T) => Result<U, E>
+): (result: Result<T, E>) => Result<U, E>;
+export function flatMap<T, E, U>(
+  resultOrFn: Result<T, E> | ((value: T) => Result<U, E>),
+  fn?: (value: T) => Result<U, E>
+): Result<U, E> | ((result: Result<T, E>) => Result<U, E>) {
+  if (isFunction(resultOrFn)) {
+    const mapFn = resultOrFn;
+
+    return (result) => flatMap(result, mapFn);
+  } else {
+    const result = resultOrFn;
+
+    if (isResult(result)) {
+      return isOk(result)
+        ? fn!(result.value)
+        : (result as unknown as Result<U, E>);
+    } else {
+      return result;
+    }
+  }
+}

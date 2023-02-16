@@ -100,3 +100,13 @@ Deno.test("Result - map", () => {
   assertEquals(x, 2);
   assertEquals(y, 0);
 });
+
+Deno.test("Result - flatMap", () => {
+  const x = pipe(
+    R.fromNullable(1, "error"),
+    R.flatMap((n) => (n === 0 ? R.err("error") : R.ok(100 / n))),
+    R.unwrapOr(0)
+  );
+
+  assertEquals(x, 1);
+});
