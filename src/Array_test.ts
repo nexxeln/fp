@@ -325,3 +325,11 @@ Deno.test("Array - min", () => {
   assertEquals(x, 1);
   assertEquals(y, 0);
 });
+
+Deno.test("Array - intersperse", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.intersperse(0));
+  const y = A.intersperse([1, 2, 3, 4, 5], 0);
+
+  assertEquals(x, [1, 0, 2, 0, 3, 0, 4, 0, 5]);
+  assertEquals(y, [1, 0, 2, 0, 3, 0, 4, 0, 5]);
+});

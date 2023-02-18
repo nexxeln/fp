@@ -412,6 +412,39 @@ export function intersection<T>(
 }
 
 /**
+ * Returns a new array with the separator interspersed between each element of the array.
+ *
+ * @param array - The array to operate on
+ * @param separator - The separator to intersperse the array with
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3],
+ *   A.intersperse(0)
+ * );
+ *
+ * assertEquals(x, [1, 0, 2, 0, 3]);
+ * ```
+ */
+export function intersperse<T>(array: T[], separator: T): T[];
+export function intersperse<T>(separator: T): (array: T[]) => T[];
+export function intersperse<T>(
+  arrayOrSeparator: T[] | T,
+  separator?: T
+): T[] | ((array: T[]) => T[]) {
+  if (arguments.length === 1) {
+    return (array: T[]) => intersperse(array, arrayOrSeparator as T);
+  }
+
+  return (arrayOrSeparator as T[]).reduce(
+    (acc, cur, index) =>
+      index === 0 ? [...acc, cur] : [...acc, separator!, cur],
+    [] as T[]
+  );
+}
+
+/**
  * Retuns an Option of Some type of the last element of the array and None if the array is empty.
  *
  * @param array - The array to operate on
