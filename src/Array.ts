@@ -167,3 +167,19 @@ export function concat<T>(
     ? (array: T[]) => concat(array, arrayOrOther)
     : [...arrayOrOther, ...(other as T[])];
 }
+
+/**
+ * Returns a new clone of the array.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = A.clone([1, 2, 3, 4, 5]);
+ *
+ * assertEquals(x, [1, 2, 3, 4, 5]);
+ * ```
+ */
+export function clone<T>(array: T[]): T[] {
+  return [...array];
+}
