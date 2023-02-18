@@ -604,6 +604,7 @@ export function min(array: number[]): Option<number> {
  * );
  *
  * assertEquals(x, [[1, 2, 3], ["a", "b", "c"]]);
+ * ```
  */
 export function partition<T, U extends T>(
   array: T[],
