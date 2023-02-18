@@ -299,7 +299,7 @@ Deno.test("Array - sum", () => {
   const x = pipe([1, 2, 3, 4, 5], A.sum);
   const y = A.sum([1, 2, 3, 4, 5]);
 
-  assertEquals(x, 20);
+  assertEquals(x, 15);
   assertEquals(y, 15);
 });
 
