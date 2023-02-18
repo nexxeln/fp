@@ -293,3 +293,19 @@ Deno.test("Array - uniq", () => {
   assertEquals(y, [1]);
   assertEquals(z, [1, 2, 3]);
 });
+
+Deno.test("Array - sum", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.sum);
+  const y = A.sum([1, 2, 3, 4, 5]);
+
+  assertEquals(x, 20);
+  assertEquals(y, 15);
+});
+
+Deno.test("Array - product", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.product);
+  const y = A.product([1, 2, 3, 4, 5]);
+
+  assertEquals(x, 120);
+  assertEquals(y, 120);
+});

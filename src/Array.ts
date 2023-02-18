@@ -454,6 +454,22 @@ export function prepend<T>(value: T, array?: T[]): T[] | ((array: T[]) => T[]) {
 }
 
 /**
+ * Returns the product of all the elements in a array of numbers.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.product);
+ *
+ * assertEquals(x, 120);
+ * ```
+ */
+export function product(array: number[]): number {
+  return array!.reduce((acc, cur) => acc * cur, 1);
+}
+
+/**
  * Returns a new array with elements that do not satisfy the provided predicate function.
  *
  * @param array - The array to operate on
@@ -500,6 +516,22 @@ export function shuffle<T>(array: T[]): T[] {
     [acc[i], acc[randomIndex]] = [acc[randomIndex], acc[i]];
     return acc;
   }, xs);
+}
+
+/**
+ * Returns the sum of all elements in a array of numbers.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.sum);
+ *
+ * assertEquals(x, 15);
+ * ```
+ */
+export function sum(array: number[]): number {
+  return array!.reduce((acc, cur) => acc + cur, 0);
 }
 
 /**
