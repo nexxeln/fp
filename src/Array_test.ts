@@ -354,3 +354,11 @@ Deno.test("Array - map", () => {
   assertEquals(y, [2, 3, 4, 5, 6]);
   assertEquals(z, [2, 4, 6, 8, 10]);
 });
+
+Deno.test("Array - length", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.length);
+  const y = A.length([1, 2, 3, 4, 5]);
+
+  assertEquals(x, 5);
+  assertEquals(y, 5);
+});

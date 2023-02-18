@@ -463,6 +463,22 @@ export function last<T>(array: T[]): Option<T> {
 }
 
 /**
+ * Returns the length of the array.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.length);
+ *
+ * assertEquals(x, 5);
+ * ```
+ */
+export function length<T>(array: T[]): number {
+  return array.length;
+}
+
+/**
  * Returns a new array with the result of calling the function on each element of the array.
  *
  * @param array - The array to operate on
