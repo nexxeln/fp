@@ -467,6 +467,27 @@ Deno.test("Array - reduce", () => {
   assertEquals(z, 25);
 });
 
+Deno.test("Array - reduceRight", () => {
+  const arr = [1, 2, 3, 4, 5];
+
+  const x = pipe(
+    arr,
+    A.reduceRight((acc, n) => acc + n, 0)
+  );
+
+  const y = A.reduceRight(arr, (acc, n) => acc + n, 0);
+
+  const z = pipe(
+    arr,
+    A.reduceRight((acc, n, i) => acc + n + i, 0)
+  );
+
+  assertEquals(arr, [1, 2, 3, 4, 5]);
+  assertEquals(x, 15);
+  assertEquals(y, 15);
+  assertEquals(z, 25);
+});
+
 Deno.test("Array - zip", () => {
   const x = pipe([1, 2, 3, 4, 5], A.zip([6, 7, 8, 9, 10]));
 
