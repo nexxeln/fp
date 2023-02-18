@@ -29,12 +29,9 @@ export function all<T>(
   arrayOrPredicate: T[] | ((value: T) => boolean),
   predicate?: (value: T) => boolean
 ): boolean | ((array: T[]) => boolean) {
-  if (arguments.length === 1) {
-    return (array: T[]) =>
-      all(array, arrayOrPredicate as (value: T) => boolean);
-  }
-
-  return (arrayOrPredicate as T[]).every(predicate as (value: T) => boolean);
+  return arguments.length === 1
+    ? (array: T[]) => all(array, arrayOrPredicate as (value: T) => boolean)
+    : (arrayOrPredicate as T[]).every(predicate as (value: T) => boolean);
 }
 
 /**
@@ -68,12 +65,9 @@ export function any<T>(
   arrayOrPredicate: T[] | ((value: T) => boolean),
   predicate?: (value: T) => boolean
 ): boolean | ((array: T[]) => boolean) {
-  if (arguments.length === 1) {
-    return (array: T[]) =>
-      any(array, arrayOrPredicate as (value: T) => boolean);
-  }
-
-  return (arrayOrPredicate as T[]).some(predicate as (value: T) => boolean);
+  return arguments.length === 1
+    ? (array: T[]) => any(array, arrayOrPredicate as (value: T) => boolean)
+    : (arrayOrPredicate as T[]).some(predicate as (value: T) => boolean);
 }
 
 /**
@@ -98,9 +92,7 @@ export function append<T>(
   arrayOrElement: T[] | T,
   element?: T
 ): T[] | ((array: T[]) => T[]) {
-  if (arguments.length === 1) {
-    return (array: T[]) => append(array, arrayOrElement as T);
-  }
-
-  return [...(arrayOrElement as T[]), element as T];
+  return arguments.length === 1
+    ? (array: T[]) => append(array, arrayOrElement as T)
+    : [...(arrayOrElement as T[]), element as T];
 }
