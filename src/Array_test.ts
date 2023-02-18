@@ -20,3 +20,21 @@ Deno.test("Array - all", () => {
   assertEquals(y, true);
   assertEquals(z, false);
 });
+
+Deno.test("Array - any", () => {
+  const x = pipe(
+    [1, 2, 3, 4, 5],
+    A.any((n) => n < 0)
+  );
+
+  const y = A.any([1, 2, 3, 4, 5], (n) => n > 4);
+
+  const z = pipe(
+    ["hi", "hello", "howdy", "bye", "hey there"],
+    A.any((str) => str.startsWith("h"))
+  );
+
+  assertEquals(x, false);
+  assertEquals(y, true);
+  assertEquals(z, true);
+});

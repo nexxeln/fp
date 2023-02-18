@@ -35,3 +35,41 @@ export function all<T>(
   }
   return (arrayOrPredicate as T[]).every(predicate as (value: T) => boolean);
 }
+
+/**
+ * Returns true if any element in the array matches the predicate, false otherwise.
+ *
+ * @param array - The array to operate on
+ * @param predicate - The predicate function to run on each element
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   ["hi", "hello", "howdy", "bye", "hey there"],
+ *   A.any((str) => str.startsWith("h"))
+ * );
+ *
+ * const y = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.any((n) => n < 0)
+ * );
+ *
+ *
+ * assertEquals(x, true);
+ * assertEquals(y, false);
+ * ```
+ */
+export function any<T>(array: T[], predicate: (value: T) => boolean): boolean;
+export function any<T>(
+  predicate: (value: T) => boolean
+): (array: T[]) => boolean;
+export function any<T>(
+  arrayOrPredicate: T[] | ((value: T) => boolean),
+  predicate?: (value: T) => boolean
+): boolean | ((array: T[]) => boolean) {
+  if (arguments.length === 1) {
+    return (array: T[]) =>
+      any(array, arrayOrPredicate as (value: T) => boolean);
+  }
+  return (arrayOrPredicate as T[]).some(predicate as (value: T) => boolean);
+}
