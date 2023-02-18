@@ -38,3 +38,17 @@ Deno.test("Array - any", () => {
   assertEquals(y, true);
   assertEquals(z, true);
 });
+
+Deno.test("Array - append", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.append(6));
+
+  const y = A.append([1, 2, 3, 4, 5], 6);
+
+  const arr = [1, 2, 3, 4, 5];
+  const z = A.append(arr, 6);
+
+  assertEquals(x, [1, 2, 3, 4, 5, 6]);
+  assertEquals(y, [1, 2, 3, 4, 5, 6]);
+  assertEquals(arr, [1, 2, 3, 4, 5]);
+  assertEquals(z, [1, 2, 3, 4, 5, 6]);
+});

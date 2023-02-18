@@ -33,6 +33,7 @@ export function all<T>(
     return (array: T[]) =>
       all(array, arrayOrPredicate as (value: T) => boolean);
   }
+
   return (arrayOrPredicate as T[]).every(predicate as (value: T) => boolean);
 }
 
@@ -71,5 +72,35 @@ export function any<T>(
     return (array: T[]) =>
       any(array, arrayOrPredicate as (value: T) => boolean);
   }
+
   return (arrayOrPredicate as T[]).some(predicate as (value: T) => boolean);
+}
+
+/**
+ * Returns a new array with the element appended to the end.
+ *
+ * @param array - The array to operate on
+ * @param element - The element to append to the array
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.append(6));
+ *
+ * const y = pipe(["hi", "hello", "howdy"], A.append("bye"));
+ *
+ * assertEquals(x, [1, 2, 3, 4, 5, 6]);
+ * assertEquals(y, ["hi", "hello", "howdy", "bye"]);
+ * ```
+ */
+export function append<T>(array: T[], element: T): T[];
+export function append<T>(element: T): (array: T[]) => T[];
+export function append<T>(
+  arrayOrElement: T[] | T,
+  element?: T
+): T[] | ((array: T[]) => T[]) {
+  if (arguments.length === 1) {
+    return (array: T[]) => append(array, arrayOrElement as T);
+  }
+
+  return [...(arrayOrElement as T[]), element as T];
 }
