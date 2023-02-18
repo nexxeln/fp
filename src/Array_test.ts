@@ -333,3 +333,24 @@ Deno.test("Array - intersperse", () => {
   assertEquals(x, [1, 0, 2, 0, 3, 0, 4, 0, 5]);
   assertEquals(y, [1, 0, 2, 0, 3, 0, 4, 0, 5]);
 });
+
+Deno.test("Array - map", () => {
+  const arr = [1, 2, 3, 4, 5];
+
+  const x = pipe(
+    arr,
+    A.map((n, i) => n * i)
+  );
+
+  const y = A.map([1, 2, 3, 4, 5], (n) => n + 1);
+
+  const z = pipe(
+    arr,
+    A.map((n) => n * 2)
+  );
+
+  assertEquals(arr, [1, 2, 3, 4, 5]);
+  assertEquals(x, [0, 2, 6, 12, 20]);
+  assertEquals(y, [2, 3, 4, 5, 6]);
+  assertEquals(z, [2, 4, 6, 8, 10]);
+});

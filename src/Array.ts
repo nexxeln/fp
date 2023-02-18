@@ -463,6 +463,41 @@ export function last<T>(array: T[]): Option<T> {
 }
 
 /**
+ * Returns a new array with the result of calling the function on each element of the array.
+ *
+ * @param array - The array to operate on
+ * @param fn - The function to map the array with
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.map((n) => n * 2)
+ * );
+ *
+ * const y = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.map((n, i) => n + i)
+ * );
+ *
+ * assertEquals(x, [2, 4, 6, 8, 10]);
+ * assertEquals(y, [1, 3, 5, 7, 9]);
+ * ```
+ */
+export function map<T, U>(array: T[], fn: (value: T, index: number) => U): U[];
+export function map<T, U>(
+  fn: (value: T, index: number) => U
+): (array: T[]) => U[];
+export function map<T, U>(
+  arrayOrFn: T[] | ((value: T, index: number) => U),
+  fn?: (value: T, index: number) => U
+): U[] | ((array: T[]) => U[]) {
+  return arguments.length === 1
+    ? (array: T[]) => map(array, arrayOrFn as (value: T, index: number) => U)
+    : (arrayOrFn as T[]).map((value, index) => fn!(value, index));
+}
+
+/**
  * Returns an Option of Some type of the maximum value of an array of numbers and None if the array is empty.
  *
  * @param array - The array to operate on
