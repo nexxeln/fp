@@ -675,7 +675,7 @@ export function prepend<T>(value: T, array?: T[]): T[] | ((array: T[]) => T[]) {
  * ```
  */
 export function product(array: number[]): number {
-  return array!.reduce((acc, cur) => acc * cur, 1);
+  return array.reduce((acc, cur) => acc * cur, 1);
 }
 
 /**
