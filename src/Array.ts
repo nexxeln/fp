@@ -183,3 +183,36 @@ export function concat<T>(
 export function clone<T>(array: T[]): T[] {
   return [...array];
 }
+
+/**
+ * Returns a new array containing the elements of the array that are not present in the other array.
+ *
+ * @param array - The array to operate on
+ * @param other - The array to compare to
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.diff([1, 2, 3])
+ * );
+ *
+ * const y = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.diff([1, 2, 3, 4, 5])
+ * );
+ *
+ * assertEquals(x, [4, 5]);
+ * assertEquals(y, []);
+ * ```
+ */
+export function diff<T>(array: T[], other: T[]): T[];
+export function diff<T>(other: T[]): (array: T[]) => T[];
+export function diff<T>(
+  arrayOrOther: T[],
+  other?: T[]
+): T[] | ((array: T[]) => T[]) {
+  return arguments.length === 1
+    ? (array: T[]) => diff(array, arrayOrOther)
+    : arrayOrOther.filter((e) => !(other as T[]).includes(e));
+}

@@ -90,3 +90,27 @@ Deno.test("Array - clone", () => {
 
   assertEquals(x, [1, 2, 3, 4, 5]);
 });
+
+Deno.test("Array - diff", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.diff([1, 3, 5]));
+
+  const y = A.diff([1, 2, 3, 4, 5], [1, 3, 5]);
+
+  const z = pipe(
+    [1, 2, 3, 4, 5],
+    A.diff([1, 3, 5]),
+    A.diff([2, 4]),
+    A.at(0),
+    O.unwrapOr(0)
+  );
+
+  const a = pipe([], A.diff([1, 3, 5]));
+
+  const b = pipe([1, 3, 5], A.diff([2, 4, 6]));
+
+  assertEquals(x, [2, 4]);
+  assertEquals(y, [2, 4]);
+  assertEquals(z, 0);
+  assertEquals(a, []);
+  assertEquals(b, [1, 3, 5]);
+});
