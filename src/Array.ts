@@ -590,6 +590,55 @@ export function min(array: number[]): Option<number> {
 }
 
 /**
+ * PARTITION
+ * Returns a tuple of two arrays, the first containing the elements that satisfy the predicate and the second containing the elements that do not satisfy the predicate.
+ *
+ * @param array - The array to operate on
+ * @param predicate - The predicate to partition the array with
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, "a", 2, "b", 3, "c"],
+ *   A.partition(G.isNumber)
+ * );
+ *
+ * assertEquals(x, [[1, 2, 3], ["a", "b", "c"]]);
+ */
+export function partition<T, U extends T>(
+  array: T[],
+  predicate: (value: T, index: number) => value is U
+): readonly [U[], Exclude<T, U>[]];
+export function partition<T, U extends T>(
+  predicate: (value: T, index: number) => value is U
+): (array: T[]) => readonly [U[], Exclude<T, U>[]];
+export function partition<T>(
+  array: T[],
+  predicate: (value: T, index: number) => boolean
+): readonly [T[], T[]];
+export function partition<T>(
+  predicate: (value: T, index: number) => boolean
+): (array: T[]) => readonly [T[], T[]];
+export function partition<T>(
+  arrayOrPredicateFn: T[] | ((value: T, index: number) => boolean),
+  predicate?: (value: T, index: number) => boolean
+): readonly [T[], T[]] | ((array: T[]) => readonly [T[], T[]]) {
+  return arguments.length === 1
+    ? (array: T[]) =>
+        partition(
+          array,
+          arrayOrPredicateFn as (value: T, index: number) => boolean
+        )
+    : (arrayOrPredicateFn as T[]).reduce(
+        (acc, cur, i) => {
+          acc[predicate!(cur, i) ? 0 : 1].push(cur);
+          return acc;
+        },
+        [[], []] as readonly [T[], T[]]
+      );
+}
+
+/**
  * Returns a new array with the value prepended to the beginning of the array.
  *
  * @param value - The value to prepend to the array

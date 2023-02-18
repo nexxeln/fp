@@ -2,6 +2,7 @@ import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 
 import * as A from "./Array.ts";
 import * as O from "./Option.ts";
+import * as G from "./Typeguards.ts";
 import { pipe } from "./Function.ts";
 
 Deno.test("Array - all", () => {
@@ -403,4 +404,37 @@ Deno.test("Array - sort", () => {
   assertEquals(x, [1, 2, 3, 4, 5]);
   assertEquals(y, [5, 4, 3, 2, 1]);
   assertEquals(z, ["a", "b", "c", "d", "e"]);
+});
+
+Deno.test("Array - partition", () => {
+  const arr = [1, 2, 3, 4, 5];
+
+  const x = pipe(
+    arr,
+    A.partition((n) => n % 2 === 0)
+  );
+
+  const y = A.partition(["a", 1, "b", 2, "c"], G.isNumber);
+
+  const z = pipe(
+    arr,
+    A.partition((_, i) => i % 2 === 0)
+  );
+
+  assertEquals(arr, [1, 2, 3, 4, 5]);
+
+  assertEquals(x, [
+    [2, 4],
+    [1, 3, 5],
+  ]);
+
+  assertEquals(y, [
+    [1, 2],
+    ["a", "b", "c"],
+  ]);
+
+  assertEquals(z, [
+    [1, 3, 5],
+    [2, 4],
+  ]);
 });
