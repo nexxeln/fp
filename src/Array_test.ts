@@ -283,3 +283,13 @@ Deno.test("Array - union", () => {
   assertEquals(y, [2, 4, 6, 1, 3, 5]);
   assertEquals(z, [1, 2, 3]);
 });
+
+Deno.test("Array - uniq", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.uniq);
+  const y = A.uniq([1, 1, 1, 1, 1, 1, 1, 1]);
+  const z = pipe([1, 2, 1, 1, 3], A.uniq);
+
+  assertEquals(x, [1, 2, 3, 4, 5]);
+  assertEquals(y, [1]);
+  assertEquals(z, [1, 2, 3]);
+});

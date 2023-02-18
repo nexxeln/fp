@@ -576,3 +576,19 @@ export function union<T>(
     ? (array: T[]) => union(array, arrayOrOther as T[])
     : [...new Set([...arrayOrOther, ...other!])];
 }
+
+/**
+ * Returns a new array with all duplicate elements removed.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5, 1, 2, 3, 4, 5], A.uniq);
+ *
+ * assertEquals(x, [1, 2, 3, 4, 5]);
+ * ```
+ */
+export function uniq<T>(array: T[]): T[] {
+  return [...new Set(array)];
+}
