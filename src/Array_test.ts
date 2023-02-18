@@ -158,3 +158,33 @@ Deno.test("Array - findIndex", () => {
   assertEquals(x, 3);
   assertEquals(y, 100);
 });
+
+Deno.test("Array - flatten", () => {
+  const x = pipe(
+    [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+    ],
+    A.flatten,
+    A.at(4),
+    O.unwrapOr(0)
+  );
+
+  const y = pipe(
+    [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+    ],
+    A.flatten,
+    A.at(10),
+    O.unwrapOr(0)
+  );
+
+  const z = pipe([1, 2, [3, 4, [5, 6]], 7, 8], A.flatten);
+
+  assertEquals(x, 5);
+  assertEquals(y, 0);
+  assertEquals(z, [1, 2, 3, 4, 5, 6, 7, 8]);
+});

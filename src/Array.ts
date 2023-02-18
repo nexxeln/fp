@@ -337,3 +337,25 @@ export function findIndex<T>(
 
   return result === -1 ? none : some(result);
 }
+
+/**
+ * Returns a new array with all the sub arrays concatenated into it at a single level of depth.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, [3, 4, [5, 6]], 7, 8],
+ *   A.flatten
+ * )
+ *
+ * assertEquals(x, [1, 2, 3, 4, 5, 6, 7, 8]);
+ * ```
+ */
+export function flatten<T>(array: T[]): (T extends (infer U)[] ? U : T)[] {
+  return array.reduce(
+    (acc, cur) => [...acc, ...(Array.isArray(cur) ? flatten(cur) : [cur])],
+    [] as (T extends (infer B)[] ? B : T)[]
+  );
+}
