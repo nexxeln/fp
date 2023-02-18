@@ -216,3 +216,13 @@ Deno.test("Array - last", () => {
   assertEquals(x, 5);
   assertEquals(y, 0);
 });
+
+Deno.test("Array - prepend", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.prepend(0));
+  const y = A.prepend(0, [1, 2, 3, 4, 5]);
+  const z = pipe([1, 2, 3, 4, 5], A.prepend(0), A.prepend(-1));
+
+  assertEquals(x, [0, 1, 2, 3, 4, 5]);
+  assertEquals(y, [0, 1, 2, 3, 4, 5]);
+  assertEquals(z, [-1, 0, 1, 2, 3, 4, 5]);
+});

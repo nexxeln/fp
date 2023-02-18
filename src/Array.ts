@@ -428,3 +428,27 @@ export function intersection<T>(
 export function last<T>(array: T[]): Option<T> {
   return array.length === 0 ? none : some(array[array.length - 1]);
 }
+
+/**
+ * Returns a new array with the value prepended to the beginning of the array.
+ *
+ * @param value - The value to prepend to the array
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.prepend(0)
+ * );
+ *
+ * assertEquals(x, [0, 1, 2, 3, 4, 5]);
+ * ```
+ */
+export function prepend<T>(value: T, array: T[]): T[];
+export function prepend<T>(value: T): (array: T[]) => T[];
+export function prepend<T>(value: T, array?: T[]): T[] | ((array: T[]) => T[]) {
+  return arguments.length === 1
+    ? (array: T[]) => prepend(value, array)
+    : [value, ...array!];
+}
