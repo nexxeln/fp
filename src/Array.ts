@@ -217,29 +217,33 @@ export function diff<T>(
 }
 
 /**
- * Retuns a new array with elements dropped from the beginning of the array till the element at n index is reached. An empty array is returned if n is greater than the length of the array.
+ * Retuns a new array which is an Option of Some type with n elements dropped from the beginning of the array. None is returned if n is greater than the length of the array or negative.
  *
  * @param array - The array to operate on
  * @param n - The number of elements to drop from the beginning of the array
  *
  * @example
  * ```
- * const x = pipe([1, 2, 3, 4, 5], A.drop(2));
- * const y = pipe([1, 2, 3, 4, 5], A.drop(10));
- * const z = pipe([1, 2, 3, 4, 5], A.drop(-1));
+ * const x = pipe([1, 2, 3, 4, 5], A.drop(2), O.unwrapOr([] as number[]));
+ * const y = pipe([1, 2, 3, 4, 5], A.drop(10), O.unwrapOr([] as number[]));
+ * const z = pipe([1, 2, 3, 4, 5], A.drop(-1), O.unwrapOr([] as number[]));
  *
  * assertEquals(x, [3, 4, 5]);
- * assertEquals(y, []);
- * assertEquals(z, [5]);
+ * assertEquals(y, [1]);
+ * assertEquals(z, [1]);
  * ```
  */
-export function drop<T>(array: T[], n: number): T[];
-export function drop<T>(n: number): (array: T[]) => T[];
+export function drop<T>(array: T[], n: number): Option<T[]>;
+export function drop<T>(n: number): (array: T[]) => Option<T[]>;
 export function drop<T>(
   arrayOrN: T[] | number,
   n?: number
-): T[] | ((array: T[]) => T[]) {
-  return arguments.length === 1
-    ? (array: T[]) => drop(array, arrayOrN as number)
-    : (arrayOrN as T[]).slice(n as number);
+): Option<T[]> | ((array: T[]) => Option<T[]>) {
+  if (arguments.length === 1) {
+    return (array: T[]) => drop(array, arrayOrN as number);
+  }
+
+  return n! < 0 || n! > (arrayOrN as T[]).length
+    ? none
+    : some((arrayOrN as T[]).slice(n!));
 }
