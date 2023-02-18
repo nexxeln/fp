@@ -1,3 +1,5 @@
+import { type Option, some, none } from "./Option.ts";
+
 /**
  * Returns true if all elements in the array match the predicate, false otherwise.
  *
@@ -95,4 +97,46 @@ export function append<T>(
   return arguments.length === 1
     ? (array: T[]) => append(array, arrayOrElement as T)
     : [...(arrayOrElement as T[]), element as T];
+}
+
+/**
+ * Returns an Option of Some type if an element is present at the given index, or None if the there is no element at the given index.
+ *
+ * @param array - The array to operate on
+ * @param index - The index of the element to return
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.at(2),
+ *   O.unwrapOr(0)
+ * );
+ *
+ * const y = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.at(10),
+ *   O.match(
+ *     (n) => `${n} is at index 10`,
+ *     () => "No element at index 10"
+ *   )
+ * );
+ *
+ * assertEquals(x, 3);
+ * assertEquals(y, "No element at index 10");
+ * ```
+ */
+export function at<T>(array: T[], index: number): Option<T>;
+export function at<T>(index: number): (array: T[]) => Option<T>;
+export function at<T>(
+  arrayOrIndex: T[] | number,
+  index?: number
+): Option<T> | ((array: T[]) => Option<T>) {
+  if (arguments.length === 1) {
+    return (array: T[]) => at(array, arrayOrIndex as number);
+  }
+
+  return (arrayOrIndex as T[])[index as number] === undefined
+    ? none
+    : some((arrayOrIndex as T[])[index as number]);
 }
