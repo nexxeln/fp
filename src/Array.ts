@@ -140,3 +140,30 @@ export function at<T>(
     ? none
     : some((arrayOrIndex as T[])[index as number]);
 }
+
+/**
+ * Retuns a new array with the other array concatenated to the end of the first array.
+ *
+ * @param array - The array to operate on
+ * @param other - The array to concat to the end of the first array
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3],
+ *   A.concat([4, 5])
+ * );
+ *
+ * assertEquals(x, [1, 2, 3, 4, 5]);
+ * ```
+ */
+export function concat<T>(array: T[], other: T[]): T[];
+export function concat<T>(other: T[]): (array: T[]) => T[];
+export function concat<T>(
+  arrayOrOther: T[],
+  other?: T[]
+): T[] | ((array: T[]) => T[]) {
+  return arguments.length === 1
+    ? (array: T[]) => concat(array, arrayOrOther)
+    : [...arrayOrOther, ...(other as T[])];
+}
