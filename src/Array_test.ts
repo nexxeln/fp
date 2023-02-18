@@ -446,3 +446,23 @@ Deno.test("Array - reverse", () => {
   assertEquals(x, [5, 4, 3, 2, 1]);
   assertEquals(y, [5, 4, 3, 2, 1]);
 });
+
+Deno.test("Array - reduce", () => {
+  const arr = [1, 2, 3, 4, 5];
+  const x = pipe(
+    arr,
+    A.reduce((acc, n) => acc + n, 0)
+  );
+
+  const y = A.reduce(arr, (acc, n) => acc + n, 0);
+
+  const z = pipe(
+    arr,
+    A.reduce((acc, n, i) => acc + n + i, 0)
+  );
+
+  assertEquals(arr, [1, 2, 3, 4, 5]);
+  assertEquals(x, 15);
+  assertEquals(y, 15);
+  assertEquals(z, 25);
+});

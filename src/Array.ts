@@ -679,6 +679,50 @@ export function product(array: number[]): number {
 }
 
 /**
+ * Reduces an array to a single value by applying a function to each element and accumulating the result.
+ *
+ * @param array - The array to operate on
+ * @param fn - The function to reduce the array with
+ * @param initial - The initial value to reduce the array with
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.reduce((acc, cur) => acc + cur, 0)
+ * );
+ *
+ * assertEquals(x, 15);
+ * ```
+ */
+export function reduce<T, U>(
+  array: T[],
+  fn: (acc: U, value: T, index: number) => U,
+  initial: U
+): U;
+export function reduce<T, U>(
+  fn: (acc: U, value: T, index: number) => U,
+  initial: U
+): (array: T[]) => U;
+export function reduce<T, U>(
+  arrayOrFn: T[] | ((acc: U, value: T, index: number) => U),
+  fnOrInitial: ((acc: U, value: T, index: number) => U) | U,
+  initial?: U
+): U | ((array: T[]) => U) {
+  return arguments.length === 2
+    ? (array: T[]) =>
+        reduce(
+          array,
+          arrayOrFn as (acc: U, value: T, index: number) => U,
+          fnOrInitial as U
+        )
+    : (arrayOrFn as T[]).reduce(
+        fnOrInitial as (acc: U, value: T, index: number) => U,
+        initial as U
+      );
+}
+
+/**
  * Returns a new array with elements that do not satisfy the provided predicate function.
  *
  * @param array - The array to operate on
