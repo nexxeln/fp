@@ -926,3 +926,28 @@ export function union<T>(
 export function uniq<T>(array: T[]): T[] {
   return [...new Set(array)];
 }
+
+/**
+ * ZIP
+ * Returns a new array of tuples, where the n-th tuple contains the corresponding element from each of the argument arrays.
+ *
+ * @param array - The array to operate on
+ * @param other - The array to zip with
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3], A.zip(["a", "b", "c"]));
+ *
+ * assertEquals(x, [[1, "a"], [2, "b"], [3, "c"]]);
+ * ```
+ */
+export function zip<T, U>(array: T[], other: U[]): readonly [T, U][];
+export function zip<T, U>(other: U[]): (array: T[]) => readonly [T, U][];
+export function zip<T, U>(
+  arrayOrOther: T[] | U[],
+  other?: U[]
+): readonly [T, U][] | ((array: T[]) => readonly [T, U][]) {
+  return arguments.length === 1
+    ? (array: T[]) => zip(array, arrayOrOther as U[])
+    : arrayOrOther.map((a, i) => [a as T, other![i]]);
+}

@@ -466,3 +466,23 @@ Deno.test("Array - reduce", () => {
   assertEquals(y, 15);
   assertEquals(z, 25);
 });
+
+Deno.test("Array - zip", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.zip([6, 7, 8, 9, 10]));
+
+  const y = pipe(["a", "b", "c"], A.zip([1, 2, 3, 4, 5]));
+
+  assertEquals(x, [
+    [1, 6],
+    [2, 7],
+    [3, 8],
+    [4, 9],
+    [5, 10],
+  ]);
+
+  assertEquals(y, [
+    ["a", 1],
+    ["b", 2],
+    ["c", 3],
+  ]);
+});
