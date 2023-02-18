@@ -486,6 +486,33 @@ export function intersperse<T>(
 }
 
 /**
+ * Returns a string of all the elements of the array separated by the separator.
+ *
+ * @param array - The array to operate on
+ * @param separator - The separator to join the array with
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3],
+ *   A.join("-")
+ * );
+ *
+ * assertEquals(x, "1-2-3");
+ * ```
+ */
+export function join<T>(array: T[], separator: string): string;
+export function join<T>(separator: string): (array: T[]) => string;
+export function join<T>(
+  arrayOrSeparator: T[] | string,
+  separator?: string
+): string | ((array: T[]) => string) {
+  return arguments.length === 1
+    ? (array: T[]) => join(array, arrayOrSeparator as string)
+    : (arrayOrSeparator as T[]).join(separator!);
+}
+
+/**
  * Retuns an Option of Some type of the last element of the array and None if the array is empty.
  *
  * @param array - The array to operate on

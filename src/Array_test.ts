@@ -526,3 +526,11 @@ Deno.test("Array - uncons", () => {
   assertEquals(x, [1, 4]);
   assertEquals(y, [0]);
 });
+
+Deno.test("Array - join", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.join(", "));
+  const y = A.join(["a", "b", "c"], ".");
+
+  assertEquals(x, "1, 2, 3, 4, 5");
+  assertEquals(y, "a.b.c");
+});
