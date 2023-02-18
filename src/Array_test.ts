@@ -273,3 +273,13 @@ Deno.test("Array - take", () => {
   assertEquals(y, [0]);
   assertEquals(z, [1, 2, 3, 4, 5]);
 });
+
+Deno.test("Array - union", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.union([1, 3, 5]));
+  const y = A.union([2, 4, 6], [1, 3, 5]);
+  const z = pipe([1, 2, 1, 1, 3], A.union([1]));
+
+  assertEquals(x, [1, 2, 3, 4, 5]);
+  assertEquals(y, [2, 4, 6, 1, 3, 5]);
+  assertEquals(z, [1, 2, 3]);
+});

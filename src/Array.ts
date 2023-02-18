@@ -550,3 +550,29 @@ export function take<T>(
 
   return n! < 0 ? none : some((arrayOrN as T[]).slice(0, n!));
 }
+
+/**
+ * Retuns the union of two arrays.
+ *
+ * @param array - The array to operate on
+ * @param other - The array to union with
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 3, 5], A.union([2, 4, 6]));
+ * const y = pipe([1, 2, 1, 4], A.union([2, 3, 4]));
+ *
+ * assertEquals(x, [1, 3, 5, 2, 4, 6]);
+ * assertEquals(y, [1, 2, 4, 3]);
+ * ```
+ */
+export function union<T>(array: T[], other: T[]): T[];
+export function union<T>(other: T[]): (array: T[]) => T[];
+export function union<T>(
+  arrayOrOther: T[] | T[],
+  other?: T[]
+): T[] | ((array: T[]) => T[]) {
+  return arguments.length === 1
+    ? (array: T[]) => union(array, arrayOrOther as T[])
+    : [...new Set([...arrayOrOther, ...other!])];
+}
