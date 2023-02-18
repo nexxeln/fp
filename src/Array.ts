@@ -377,3 +377,36 @@ export function flatten<T>(array: T[]): (T extends (infer U)[] ? U : T)[] {
 export function head<T>(array: T[]): Option<T> {
   return array.length === 0 ? none : some(array[0]);
 }
+
+/**
+ * Retuns a new array of the intersection of the two arrays.
+ *
+ * @param array - The array to operate on
+ * @param other - The other array that will be used to find the intersection
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.intersection([3, 4, 5, 6, 7])
+ * );
+ *
+ * const y = pipe(
+ *   [1, 2, 1, 1, 3],
+ *   A.intersection([1])
+ * );
+ *
+ * assertEquals(x, [3, 4, 5]);
+ * assertEquals(y, [1]);
+ * ```
+ */
+export function intersection<T>(array: T[], other: T[]): T[];
+export function intersection<T>(other: T[]): (array: T[]) => T[];
+export function intersection<T>(
+  arrayOrOther: T[] | T[],
+  other?: T[]
+): T[] | ((array: T[]) => T[]) {
+  return arguments.length === 1
+    ? (array: T[]) => intersection(array, arrayOrOther as T[])
+    : [...new Set(arrayOrOther)].filter((value) => new Set(other!).has(value));
+}

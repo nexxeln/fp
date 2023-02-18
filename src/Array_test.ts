@@ -196,3 +196,15 @@ Deno.test("Array - head", () => {
   assertEquals(x, 1);
   assertEquals(y, 0);
 });
+
+Deno.test("Array - intersection", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.intersection([1, 3, 5]));
+  const y = A.intersection([2, 4, 6], [1, 3, 5]);
+  const z = pipe([1, 2, 1, 1, 3], A.intersection([1]));
+  const a = A.intersection([1, 2, 1, 1, 3], [1]);
+
+  assertEquals(x, [1, 3, 5]);
+  assertEquals(y, []);
+  assertEquals(z, [1]);
+  assertEquals(a, [1]);
+});
