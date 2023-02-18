@@ -249,6 +249,47 @@ export function drop<T>(
 }
 
 /**
+ * Returns a new array containing the elements of the array that satisfy the predicate.
+ *
+ * @param array - The array to operate on
+ * @param predicate - The predicate to filter the array with
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.filter((n) => n % 2 === 0)
+ * );
+ *
+ * const y = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.filter((_, i) => i % 2 === 0)
+ * );
+ *
+ * assertEquals(x, [2, 4]);
+ * assertEquals(y, [1, 3, 5]);
+ * ```
+ */
+export function filter<T>(
+  array: T[],
+  predicate: (value: T, index: number) => boolean
+): T[];
+export function filter<T>(
+  predicate: (value: T, index: number) => boolean
+): (array: T[]) => T[];
+export function filter<T>(
+  arrayOrPredicate: T[] | ((value: T, index: number) => boolean),
+  predicate?: (value: T, index: number) => boolean
+): T[] | ((array: T[]) => T[]) {
+  return arguments.length === 1
+    ? (array: T[]) =>
+        filter(array, arrayOrPredicate as (value: T, index: number) => boolean)
+    : (arrayOrPredicate as T[]).filter((value, index) =>
+        predicate!(value, index)
+      );
+}
+
+/**
  * Returns an Option of Some type for the first element of the array that satisfies the predicate. None is returned if no element satisfies the predicate.
  *
  * @param array - The array to operate on

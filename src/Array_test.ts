@@ -362,3 +362,24 @@ Deno.test("Array - length", () => {
   assertEquals(x, 5);
   assertEquals(y, 5);
 });
+
+Deno.test("Array - filter", () => {
+  const arr = [1, 2, 3, 4, 5];
+
+  const x = pipe(
+    arr,
+    A.filter((n) => n % 2 === 0)
+  );
+
+  const y = A.filter(arr, (n) => n % 2 === 0);
+
+  const z = pipe(
+    arr,
+    A.filter((_, i) => i % 2 === 0)
+  );
+
+  assertEquals(arr, [1, 2, 3, 4, 5]);
+  assertEquals(x, [2, 4]);
+  assertEquals(y, [2, 4]);
+  assertEquals(z, [1, 3, 5]);
+});
