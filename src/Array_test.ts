@@ -438,3 +438,11 @@ Deno.test("Array - partition", () => {
     [2, 4],
   ]);
 });
+
+Deno.test("Array - reverse", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.reverse);
+  const y = A.reverse([1, 2, 3, 4, 5]);
+
+  assertEquals(x, [5, 4, 3, 2, 1]);
+  assertEquals(y, [5, 4, 3, 2, 1]);
+});

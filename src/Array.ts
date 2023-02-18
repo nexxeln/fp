@@ -590,7 +590,6 @@ export function min(array: number[]): Option<number> {
 }
 
 /**
- * PARTITION
  * Returns a tuple of two arrays, the first containing the elements that satisfy the predicate and the second containing the elements that do not satisfy the predicate.
  *
  * @param array - The array to operate on
@@ -706,6 +705,22 @@ export function reject<T>(
   return arguments.length === 1
     ? (array: T[]) => reject(array, arrayOrPredicate as (value: T) => boolean)
     : (arrayOrPredicate as T[]).filter((value) => !predicate!(value));
+}
+
+/**
+ * Returns a new array with it's elements reversed.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.reverse);
+ *
+ * assertEquals(x, [5, 4, 3, 2, 1]);
+ * ```
+ */
+export function reverse<T>(array: T[]): T[] {
+  return [...array].reverse();
 }
 
 /**
