@@ -229,8 +229,8 @@ export function diff<T>(
  * const z = pipe([1, 2, 3, 4, 5], A.drop(-1), O.unwrapOr([] as number[]));
  *
  * assertEquals(x, [3, 4, 5]);
- * assertEquals(y, [1]);
- * assertEquals(z, [1]);
+ * assertEquals(y, []);
+ * assertEquals(z, []);
  * ```
  */
 export function drop<T>(array: T[], n: number): Option<T[]>;
@@ -520,4 +520,33 @@ export function shuffle<T>(array: T[]): T[] {
  */
 export function tail<T>(array: T[]): Option<T[]> {
   return array.length === 0 ? none : some(array.slice(1));
+}
+
+/**
+ * Retuns a new array which is an Option of Some type with n elements taken from the beginning of the array. None is returned if n is negative. If n is greater than the length of the array, the entire array is returned.
+ *
+ * @param array - The array to operate on
+ * @param n - The number of elements to take from the array
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.take(3), O.unwrapOr([0]));
+ * const y = pipe([1, 2, 3, 4, 5], A.take(-1), O.unwrapOr([0]));
+ * const z = pipe([1, 2, 3, 4, 5], A.take(10), O.unwrapOr([0]));
+ *
+ * assertEquals(x, [1, 2, 3]);
+ * assertEquals(y, [0]);
+ * assertEquals(z, [1, 2, 3, 4, 5]);
+ */
+export function take<T>(array: T[], n: number): Option<T[]>;
+export function take<T>(n: number): (array: T[]) => Option<T[]>;
+export function take<T>(
+  arrayOrN: T[] | number,
+  n?: number
+): Option<T[]> | ((array: T[]) => Option<T[]>) {
+  if (arguments.length === 1) {
+    return (array: T[]) => take(array, arrayOrN as number);
+  }
+
+  return n! < 0 ? none : some((arrayOrN as T[]).slice(0, n!));
 }

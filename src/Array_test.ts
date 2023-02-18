@@ -263,3 +263,13 @@ Deno.test("Array - tail", () => {
   assertEquals(y, []);
   assertEquals(z, [0]);
 });
+
+Deno.test("Array - take", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.take(3), O.unwrapOr([0]));
+  const y = pipe([1, 2, 3, 4, 5], A.take(-1), O.unwrapOr([0]));
+  const z = pipe([1, 2, 3, 4, 5], A.take(10), O.unwrapOr([0]));
+
+  assertEquals(x, [1, 2, 3]);
+  assertEquals(y, [0]);
+  assertEquals(z, [1, 2, 3, 4, 5]);
+});
