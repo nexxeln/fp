@@ -253,3 +253,13 @@ Deno.test("Array - shuffle", () => {
   assertEquals(x.length, 5);
   assertEquals(y.length, 5);
 });
+
+Deno.test("Array - tail", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.tail, O.unwrapOr([0]));
+  const y = pipe([1], A.tail, O.unwrapOr([0]));
+  const z = pipe([], A.tail, O.unwrapOr([0]));
+
+  assertEquals(x, [2, 3, 4, 5]);
+  assertEquals(y, []);
+  assertEquals(z, [0]);
+});

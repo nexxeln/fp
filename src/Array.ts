@@ -501,3 +501,23 @@ export function shuffle<T>(array: T[]): T[] {
     return acc;
   }, xs);
 }
+
+/**
+ * Returns an Option of Some type of all elements of the array except the first and None if the array is empty.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.tail, O.unwrapOr([0]));
+ * const y = pipe([], A.tail, O.unwrapOr([0]));
+ * const z = pipe([1], A.tail, O.unwrapOr([0]));
+ *
+ * assertEquals(x, [2, 3, 4, 5]);
+ * assertEquals(y, [0]);
+ * assertEquals(z, []);
+ * ```
+ */
+export function tail<T>(array: T[]): Option<T[]> {
+  return array.length === 0 ? none : some(array.slice(1));
+}
