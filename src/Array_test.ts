@@ -309,3 +309,19 @@ Deno.test("Array - product", () => {
   assertEquals(x, 120);
   assertEquals(y, 120);
 });
+
+Deno.test("Array - max", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.max, O.unwrapOr(0));
+  const y = O.unwrapOr(A.max([]), 0);
+
+  assertEquals(x, 5);
+  assertEquals(y, 0);
+});
+
+Deno.test("Array - min", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.min, O.unwrapOr(0));
+  const y = O.unwrapOr(A.min([]), 0);
+
+  assertEquals(x, 1);
+  assertEquals(y, 0);
+});

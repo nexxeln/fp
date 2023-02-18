@@ -430,6 +430,41 @@ export function last<T>(array: T[]): Option<T> {
 }
 
 /**
+ * Returns an Option of Some type of the maximum value of an array of numbers and None if the array is empty.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.max, O.unwrapOr(0));
+ * const y = pipe([], A.max, O.unwrapOr(0));
+ *
+ * assertEquals(x, 5);
+ * assertEquals(y, 0);
+ * ```
+ */
+export function max(array: number[]): Option<number> {
+  return array.length === 0 ? none : some(Math.max(...array));
+}
+
+/**
+ * Returns an Option of Some type of the maximum value of an array of numbers and None if the array is empty.
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.min, O.unwrapOr(0));
+ * const y = pipe([], A.min, O.unwrapOr(0));
+ *
+ * assertEquals(x, 1);
+ * assertEquals(y, 0);
+ * ```
+ */
+export function min(array: number[]): Option<number> {
+  return array.length === 0 ? none : some(Math.min(...array));
+}
+
+/**
  * Returns a new array with the value prepended to the beginning of the array.
  *
  * @param value - The value to prepend to the array
