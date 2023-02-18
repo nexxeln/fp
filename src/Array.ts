@@ -247,3 +247,48 @@ export function drop<T>(
     ? none
     : some((arrayOrN as T[]).slice(n!));
 }
+
+/**
+ * Returns an Option of Some type for the first elementi of the array that satisfies the predicate. None is returned if no element satisfies the predicate.
+ *
+ * @param array - The array to operate on
+ * @param predicate - The predicate to find the element
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.find((x) => x > 3),
+ *   O.unwrapOr(0)
+ * );
+ *
+ * const y = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.find((x) => x < 0),
+ *   O.unwrapOr(0)
+ * );
+ *
+ * assertEquals(x, 4);
+ * assertEquals(y, 0);
+ * ```
+ */
+export function find<T>(
+  array: T[],
+  predicate: (value: T) => boolean
+): Option<T>;
+export function find<T>(
+  predicate: (value: T) => boolean
+): (array: T[]) => Option<T>;
+export function find<T>(
+  arrayOrPredicate: T[] | ((value: T) => boolean),
+  predicate?: (value: T) => boolean
+): Option<T> | ((array: T[]) => Option<T>) {
+  if (arguments.length === 1) {
+    return (array: T[]) =>
+      find(array, arrayOrPredicate as (value: T) => boolean);
+  }
+
+  const result = (arrayOrPredicate as T[]).find(predicate!);
+
+  return result === undefined ? none : some(result);
+}

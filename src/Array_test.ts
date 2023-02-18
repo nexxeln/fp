@@ -124,3 +124,20 @@ Deno.test("Array - drop", () => {
   assertEquals(y, []);
   assertEquals(z, []);
 });
+
+Deno.test("Array - find", () => {
+  const x = pipe(
+    [1, 2, 3, 4, 5],
+    A.find((n) => n > 3),
+    O.unwrapOr(0)
+  );
+
+  const y = pipe(
+    [1, 2, 3, 4, 5],
+    A.find((n) => n < 0),
+    O.unwrapOr(0)
+  );
+
+  assertEquals(x, 4);
+  assertEquals(y, 0);
+});
