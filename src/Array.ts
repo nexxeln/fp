@@ -452,3 +452,32 @@ export function prepend<T>(value: T, array?: T[]): T[] | ((array: T[]) => T[]) {
     ? (array: T[]) => prepend(value, array)
     : [value, ...array!];
 }
+
+/**
+ * Returns a new array with elements that do not satisfy the provided predicate function.
+ *
+ * @param array - The array to operate on
+ * @param predicate - The predicate function to use to filter the array
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.reject((x) => x % 2 === 0)
+ * );
+ *
+ * assertEquals(x, [1, 3, 5]);
+ * ```
+ */
+export function reject<T>(array: T[], predicate: (value: T) => boolean): T[];
+export function reject<T>(
+  predicate: (value: T) => boolean
+): (array: T[]) => T[];
+export function reject<T>(
+  arrayOrPredicate: T[] | ((value: T) => boolean),
+  predicate?: (value: T) => boolean
+): T[] | ((array: T[]) => T[]) {
+  return arguments.length === 1
+    ? (array: T[]) => reject(array, arrayOrPredicate as (value: T) => boolean)
+    : (arrayOrPredicate as T[]).filter((value) => !predicate!(value));
+}

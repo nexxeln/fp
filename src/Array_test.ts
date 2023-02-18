@@ -226,3 +226,21 @@ Deno.test("Array - prepend", () => {
   assertEquals(y, [0, 1, 2, 3, 4, 5]);
   assertEquals(z, [-1, 0, 1, 2, 3, 4, 5]);
 });
+
+Deno.test("Array - reject", () => {
+  const x = pipe(
+    [1, 2, 3, 4, 5],
+    A.reject((n) => n > 3)
+  );
+
+  const y = A.reject([1, 2, 3, 4, 5], (n) => n > 3);
+
+  const z = pipe(
+    [1, 2, 3, 4, 5],
+    A.reject((n) => n < 0)
+  );
+
+  assertEquals(x, [1, 2, 3]);
+  assertEquals(y, [1, 2, 3]);
+  assertEquals(z, [1, 2, 3, 4, 5]);
+});
