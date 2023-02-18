@@ -886,6 +886,35 @@ export function take<T>(
 }
 
 /**
+ * Retuns an Option of Some type of a tuple with the first element of the array (head) and the rest of the array (tail). None is returned if the array is empty.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.uncons,
+ *   O.map(([head, tail]) => [head, tail.length]),
+ *   O.unwrapOr([0, 0])
+ * );
+ *
+ * const y = pipe(
+ *   [],
+ *   A.uncons,
+ *   O.map(([head, tail]) => [head, tail.length]),
+ *   O.unwrapOr([0, 0])
+ * );
+ *
+ * assertEquals(x, [1, 4]);
+ * assertEquals(y, [0, 0]);
+ * ```
+ */
+export function uncons<T>(array: T[]): Option<readonly [T, T[]]> {
+  return array.length === 0 ? none : some([array[0], array.slice(1)]);
+}
+
+/**
  * Retuns the union of two arrays.
  *
  * @param array - The array to operate on
@@ -928,7 +957,6 @@ export function uniq<T>(array: T[]): T[] {
 }
 
 /**
- * ZIP
  * Returns a new array of tuples, where the n-th tuple contains the corresponding element from each of the argument arrays.
  *
  * @param array - The array to operate on

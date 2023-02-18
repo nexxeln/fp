@@ -486,3 +486,22 @@ Deno.test("Array - zip", () => {
     ["c", 3],
   ]);
 });
+
+Deno.test("Array - uncons", () => {
+  const x = pipe(
+    [1, 2, 3, 4, 5],
+    A.uncons,
+    O.map(([head, tail]) => [head, tail.length]),
+    O.unwrapOr([0])
+  );
+
+  const y = pipe(
+    [],
+    A.uncons,
+    O.map(([head, tail]) => [head, tail.length]),
+    O.unwrapOr([0])
+  );
+
+  assertEquals(x, [1, 4]);
+  assertEquals(y, [0]);
+});
