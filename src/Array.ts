@@ -486,6 +486,42 @@ export function intersperse<T>(
 }
 
 /**
+ * Returns true if the array is empty, false otherwise.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3], A.isEmpty);
+ * const y = pipe([], A.isEmpty);
+ *
+ * assertEquals(x, false);
+ * assertEquals(y, true);
+ * ```
+ */
+export function isEmpty<T>(array: T[]): boolean {
+  return array.length === 0;
+}
+
+/**
+ * Returns false if the array is empty, true otherwise.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3], A.isNonEmpty);
+ * const y = pipe([], A.isNonEmpty);
+ *
+ * assertEquals(x, true);
+ * assertEquals(y, false);
+ * ```
+ */
+export function isNonEmpty<T>(array: T[]): boolean {
+  return array.length !== 0;
+}
+
+/**
  * Returns a string of all the elements of the array separated by the separator.
  *
  * @param array - The array to operate on

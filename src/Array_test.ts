@@ -534,3 +534,19 @@ Deno.test("Array - join", () => {
   assertEquals(x, "1, 2, 3, 4, 5");
   assertEquals(y, "a.b.c");
 });
+
+Deno.test("Array - isEmpty", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.isEmpty);
+  const y = A.isEmpty([]);
+
+  assertEquals(x, false);
+  assertEquals(y, true);
+});
+
+Deno.test("Array - isNonEmpty", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.isNonEmpty);
+  const y = A.isNonEmpty([]);
+
+  assertEquals(x, true);
+  assertEquals(y, false);
+});
