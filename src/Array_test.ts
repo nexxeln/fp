@@ -208,3 +208,11 @@ Deno.test("Array - intersection", () => {
   assertEquals(z, [1]);
   assertEquals(a, [1]);
 });
+
+Deno.test("Array - last", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.last, O.unwrapOr(0));
+  const y = pipe([], A.last, O.unwrapOr(0));
+
+  assertEquals(x, 5);
+  assertEquals(y, 0);
+});
