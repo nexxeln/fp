@@ -141,3 +141,20 @@ Deno.test("Array - find", () => {
   assertEquals(x, 4);
   assertEquals(y, 0);
 });
+
+Deno.test("Array - findIndex", () => {
+  const x = pipe(
+    [1, 2, 3, 4, 5],
+    A.findIndex((n) => n > 3),
+    O.unwrapOr(0)
+  );
+
+  const y = pipe(
+    [1, 2, 3, 4, 5],
+    A.findIndex((n) => n < 0),
+    O.unwrapOr(100)
+  );
+
+  assertEquals(x, 3);
+  assertEquals(y, 100);
+});
