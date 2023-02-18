@@ -114,3 +114,24 @@ Deno.test("Array - diff", () => {
   assertEquals(a, []);
   assertEquals(b, [1, 3, 5]);
 });
+
+Deno.test("Array - drop", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.drop(3));
+
+  const y = A.drop([1, 2, 3, 4, 5], 3);
+
+  const z = pipe([1, 2, 3, 4, 5], A.drop(10));
+
+  const a = pipe([1, 2, 3, 4, 5], A.drop(-1));
+
+  const arr = [1, 2, 3, 4, 5];
+
+  const b = A.drop(arr, 3);
+
+  assertEquals(x, [4, 5]);
+  assertEquals(y, [4, 5]);
+  assertEquals(z, []);
+  assertEquals(a, [5]);
+  assertEquals(arr, [1, 2, 3, 4, 5]);
+  assertEquals(b, [4, 5]);
+});

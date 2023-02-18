@@ -81,7 +81,6 @@ export function any<T>(
  * @example
  * ```
  * const x = pipe([1, 2, 3, 4, 5], A.append(6));
- *
  * const y = pipe(["hi", "hello", "howdy"], A.append("bye"));
  *
  * assertEquals(x, [1, 2, 3, 4, 5, 6]);
@@ -215,4 +214,32 @@ export function diff<T>(
   return arguments.length === 1
     ? (array: T[]) => diff(array, arrayOrOther)
     : arrayOrOther.filter((e) => !(other as T[]).includes(e));
+}
+
+/**
+ * Retuns a new array with elements dropped from the beginning of the array till the element at n index is reached. An empty array is returned if n is greater than the length of the array.
+ *
+ * @param array - The array to operate on
+ * @param n - The number of elements to drop from the beginning of the array
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.drop(2));
+ * const y = pipe([1, 2, 3, 4, 5], A.drop(10));
+ * const z = pipe([1, 2, 3, 4, 5], A.drop(-1));
+ *
+ * assertEquals(x, [3, 4, 5]);
+ * assertEquals(y, []);
+ * assertEquals(z, [5]);
+ * ```
+ */
+export function drop<T>(array: T[], n: number): T[];
+export function drop<T>(n: number): (array: T[]) => T[];
+export function drop<T>(
+  arrayOrN: T[] | number,
+  n?: number
+): T[] | ((array: T[]) => T[]) {
+  return arguments.length === 1
+    ? (array: T[]) => drop(array, arrayOrN as number)
+    : (arrayOrN as T[]).slice(n as number);
 }
