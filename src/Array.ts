@@ -359,3 +359,21 @@ export function flatten<T>(array: T[]): (T extends (infer U)[] ? U : T)[] {
     [] as (T extends (infer B)[] ? B : T)[]
   );
 }
+
+/**
+ * Returns an Option of Some type of the first element of the array and None if the array is empty.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.head, O.unwrapOr(0));
+ * const y = pipe([], A.head, O.unwrapOr(0));
+ *
+ * assertEquals(x, 1);
+ * assertEquals(y, 0);
+ * ```
+ */
+export function head<T>(array: T[]): Option<T> {
+  return array.length === 0 ? none : some(array[0]);
+}

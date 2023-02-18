@@ -188,3 +188,11 @@ Deno.test("Array - flatten", () => {
   assertEquals(y, 0);
   assertEquals(z, [1, 2, 3, 4, 5, 6, 7, 8]);
 });
+
+Deno.test("Array - head", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.head, O.unwrapOr(0));
+  const y = pipe([], A.head, O.unwrapOr(0));
+
+  assertEquals(x, 1);
+  assertEquals(y, 0);
+});
