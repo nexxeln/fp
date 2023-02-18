@@ -244,3 +244,12 @@ Deno.test("Array - reject", () => {
   assertEquals(y, [1, 2, 3]);
   assertEquals(z, [1, 2, 3, 4, 5]);
 });
+
+Deno.test("Array - shuffle", () => {
+  const x = pipe([1, 2, 3, 4, 5], A.shuffle);
+
+  const y = A.shuffle([1, 2, 3, 4, 5]);
+
+  assertEquals(x.length, 5);
+  assertEquals(y.length, 5);
+});

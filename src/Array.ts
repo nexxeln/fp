@@ -481,3 +481,23 @@ export function reject<T>(
     ? (array: T[]) => reject(array, arrayOrPredicate as (value: T) => boolean)
     : (arrayOrPredicate as T[]).filter((value) => !predicate!(value));
 }
+
+/**
+ * Retuns a new array with it's elements shuffled.
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.shuffle);
+ * // x is now a shuffled version of [1, 2, 3, 4, 5]
+ * ```
+ */
+export function shuffle<T>(array: T[]): T[] {
+  const xs = [...array];
+  return xs.reduce((acc, _, i) => {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [acc[i], acc[randomIndex]] = [acc[randomIndex], acc[i]];
+    return acc;
+  }, xs);
+}
