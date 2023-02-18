@@ -679,6 +679,39 @@ export function shuffle<T>(array: T[]): T[] {
 }
 
 /**
+ * Returns a new array with it's elements sorted.
+ *
+ * @param array - The array to operate on
+ * @param compareFn - The compare function to use to sort the array
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.sort((a, b) => b - a)
+ * );
+ *
+ * const y = pipe(
+ *   ["b", "a", "c", "e", "d"],
+ *   A.sort((a, b) => a.localeCompare(b))
+ * );
+ *
+ * assertEquals(x, [5, 4, 3, 2, 1]);
+ * assertEquals(y, ["a", "b", "c", "d", "e"]);
+ * ```
+ */
+export function sort<T>(array: T[], compareFn?: (a: T, b: T) => number): T[];
+export function sort<T>(compareFn: (a: T, b: T) => number): (array: T[]) => T[];
+export function sort<T>(
+  arrayOrCompareFn: T[] | ((a: T, b: T) => number),
+  compareFn?: (a: T, b: T) => number
+): T[] | ((array: T[]) => T[]) {
+  return arguments.length === 1
+    ? (array: T[]) => sort(array, arrayOrCompareFn as (a: T, b: T) => number)
+    : [...(arrayOrCompareFn as T[])].sort(compareFn);
+}
+
+/**
  * Returns the sum of all elements in a array of numbers.
  *
  * @param array - The array to operate on

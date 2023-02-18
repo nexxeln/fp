@@ -383,3 +383,24 @@ Deno.test("Array - filter", () => {
   assertEquals(y, [2, 4]);
   assertEquals(z, [1, 3, 5]);
 });
+
+Deno.test("Array - sort", () => {
+  const arr = [2, 4, 1, 3, 5];
+
+  const x = pipe(
+    arr,
+    A.sort((a, b) => a - b)
+  );
+
+  const y = A.sort([1, 2, 3, 4, 5], (a, b) => b - a);
+
+  const z = pipe(
+    ["d", "a", "e", "b", "c"],
+    A.sort((a, b) => a.localeCompare(b))
+  );
+
+  assertEquals(arr, [2, 4, 1, 3, 5]);
+  assertEquals(x, [1, 2, 3, 4, 5]);
+  assertEquals(y, [5, 4, 3, 2, 1]);
+  assertEquals(z, ["a", "b", "c", "d", "e"]);
+});
