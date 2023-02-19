@@ -61,3 +61,11 @@ Deno.test("String - isNonEmpty", () => {
   assertEquals(x, true);
   assertEquals(y, false);
 });
+
+Deno.test("String - last", () => {
+  const x = pipe("Hello World!", S.last, O.unwrapOr("Not Found"));
+  const y = pipe("", S.last, O.unwrapOr("Not Found"));
+
+  assertEquals(x, "!");
+  assertEquals(y, "Not Found");
+});

@@ -169,3 +169,21 @@ export function isEmpty(str: string): boolean {
 export function isNonEmpty(str: string): boolean {
   return str !== "";
 }
+
+/**
+ * Returns an Option of Some type of the last character of the string or None if the string is empty.
+ *
+ * @param str - String to check
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.last, O.unwrapOr("nope"));
+ * const y = pipe("", S.last, O.unwrapOr("nope"));
+ *
+ * assertEquals(x, "o");
+ * assertEquals(y, "nope");
+ * ```
+ */
+export function last(str: string): Option<string> {
+  return str === "" ? none : some(str[str.length - 1]);
+}
