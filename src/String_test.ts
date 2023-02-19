@@ -2,6 +2,7 @@ import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 
 import * as S from "./String.ts";
 import * as O from "./Option.ts";
+import * as A from "./Array.ts";
 import { pipe } from "./Function.ts";
 
 Deno.test("String - append", () => {
@@ -166,4 +167,12 @@ Deno.test("String - trim, trimEnd, trimStart", () => {
   assertEquals(x, "Hello World!");
   assertEquals(y, " Hello World!");
   assertEquals(z, "Hello World! ");
+});
+
+Deno.test("String - toArray", () => {
+  const x = pipe("Hello World!", S.toArray, A.uniq);
+  const y = pipe("", S.toArray);
+
+  assertEquals(x, ["H", "e", "l", "o", " ", "W", "r", "d", "!"]);
+  assertEquals(y, []);
 });

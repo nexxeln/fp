@@ -465,6 +465,22 @@ export function startsWith(
 }
 
 /**
+ * Returns an array of the characters in the string.
+ *
+ * @param str - String to convert to an array
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.toArray);
+ *
+ * assertEquals(x, ["h", "e", "l", "l", "o"]);
+ * ```
+ */
+export function toArray(str: string): string[] {
+  return str.split("");
+}
+
+/**
  * Returns a new string with whitespaces trimmed from the start and end of the string.
  *
  * @param str - String to trim
