@@ -2,6 +2,7 @@ import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 
 import * as A from "./Array.ts";
 import * as O from "./Option.ts";
+import * as S from "./String.ts";
 import * as G from "./Typeguards.ts";
 import { pipe } from "./Function.ts";
 
@@ -549,4 +550,20 @@ Deno.test("Array - isNonEmpty", () => {
 
   assertEquals(x, true);
   assertEquals(y, false);
+});
+
+Deno.test("Array - unlines", () => {
+  const x = pipe(["a", "b", "c"], A.unlines, S.lines);
+  const y = A.unlines(["hello", "world", "deno"]);
+
+  assertEquals(x, ["a", "b", "c"]);
+  assertEquals(y, "hello\nworld\ndeno");
+});
+
+Deno.test("Array - unwords", () => {
+  const x = pipe(["a", "b", "c"], A.unwords, S.words);
+  const y = A.unwords(["hello", "world", "deno"]);
+
+  assertEquals(x, ["a", "b", "c"]);
+  assertEquals(y, "hello world deno");
 });

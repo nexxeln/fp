@@ -1064,6 +1064,42 @@ export function uniq<T>(array: T[]): T[] {
 }
 
 /**
+ * Returns a string of all elements of the array joined by newlines. Has the inverse effect of S.lines()
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe(["a", "b", "c"], A.unlines);
+ * const y = pipe(["a", "b", "c"], A.unlines, S.lines);
+ *
+ * assertEquals(x, "a\nb\nc");
+ * assertEquals(y, ["a", "b", "c"]);
+ * ```
+ */
+export function unlines(array: string[]): string {
+  return array.join("\n");
+}
+
+/**
+ * Returns a string of all elements of the array joined by whitespaces. Has the inverse effect of S.words().
+ *
+ * @param array - The array to operate on
+ *
+ * @example
+ * ```
+ * const x = pipe(["a", "b", "c"], A.unwords);
+ * const y = pipe(["a", "b", "c"], A.unwords, S.words);
+ *
+ * assertEquals(x, "a b c");
+ * assertEquals(y, ["a", "b", "c"]);
+ * ```
+ */
+export function unwords(array: string[]): string {
+  return array.join(" ");
+}
+
+/**
  * Returns a new array of tuples, where the n-th tuple contains the corresponding element from each of the argument arrays.
  *
  * @param array - The array to operate on
