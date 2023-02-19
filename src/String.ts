@@ -59,6 +59,22 @@ export function endsWith(
 }
 
 /**
+ * Returns a new string with the first character capitalized.
+ *
+ * @param str - String to capitalize
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.capitalize);
+ *
+ * assertEquals(x, "Hello");
+ * ```
+ */
+export function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+/**
  * Returns an Option of Some type of the character at the given index or None if the index is out of bounds.
  *
  * @param str - String to check
