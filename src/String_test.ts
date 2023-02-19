@@ -187,3 +187,14 @@ Deno.test("String - toLower, toUpper", () => {
   assertEquals(x, "hello world!");
   assertEquals(y, "HELLO WORLD!");
 });
+
+Deno.test("String - words", () => {
+  const str = "Hello World!";
+
+  const x = pipe(str, S.words);
+  const y = pipe("", S.words);
+
+  assertEquals(str, "Hello World!");
+  assertEquals(x, ["Hello", "World!"]);
+  assertEquals(y, []);
+});

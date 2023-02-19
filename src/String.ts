@@ -559,3 +559,21 @@ export function trimEnd(str: string): string {
 export function trimStart(str: string): string {
   return str.trimStart();
 }
+
+/**
+ * Returns an array of words in the string by splitting at whitespaces. If the string is empty, an empty array is returned.
+ *
+ * @param str - String to split into words
+ *
+ * @example
+ * ```
+ * const x = pipe("hello world", S.words);
+ * const y = pipe("", S.words);
+ *
+ * assertEquals(x, ["hello", "world"]);
+ * assertEquals(y, []);
+ * ```
+ */
+export function words(str: string): string[] {
+  return str === "" ? [] : str.split(" ");
+}
