@@ -435,3 +435,31 @@ export function splitAt(
     (strOrIndex as string).slice(index!),
   ];
 }
+
+/**
+ * Returns true if the string starts with the prefix, false otherwise.
+ *
+ * @param str - String to check
+ * @param prefix - Prefix to check the string starts with
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.startsWith("he"));
+ * const y = pipe("hello", S.startsWith("lo"));
+ *
+ * assertEquals(x, true);
+ * assertEquals(y, false);
+ * ```
+ */
+export function startsWith(str: string, prefix: string): boolean;
+export function startsWith(prefix: string): (str: string) => boolean;
+export function startsWith(
+  strOrPrefix: string,
+  prefix?: string
+): boolean | ((str: string) => boolean) {
+  if (arguments.length === 1) {
+    return (_str: string) => startsWith(_str, strOrPrefix);
+  }
+
+  return strOrPrefix.startsWith(prefix!);
+}

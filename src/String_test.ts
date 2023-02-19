@@ -147,3 +147,11 @@ Deno.test("String - splitAt", () => {
   assertEquals(y, ["Hello World!", ""]);
   assertEquals(z, ["", "Hello World!"]);
 });
+
+Deno.test("String - startsWith", () => {
+  const x = pipe("Hello World!", S.startsWith("Hello"));
+  const y = pipe("Hello World!", S.startsWith("Goodbye"));
+
+  assertEquals(x, true);
+  assertEquals(y, false);
+});
