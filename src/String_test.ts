@@ -129,3 +129,11 @@ Deno.test("String - reverse", () => {
 
   assertEquals(x, "!dlroW olleH");
 });
+
+Deno.test("String - split", () => {
+  const x = pipe("Hello World!", S.split(" "));
+  const y = pipe("Hello World!", S.split("o"));
+
+  assertEquals(x, ["Hello", "World!"]);
+  assertEquals(y, ["Hell", " W", "rld!"]);
+});

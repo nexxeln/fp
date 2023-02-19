@@ -375,3 +375,31 @@ export function replaceAll(
 export function reverse(str: string): string {
   return str.split("").reverse().join("");
 }
+
+/**
+ * Returns an array of strings split at every occurence of the delimiter.
+ *
+ * @param str - String to split
+ * @param delimiter - Delimiter to split the string at
+ *
+ * @example
+ * ```
+ * const x = pipe("hello world", S.split(" "));
+ * const y = pipe("hello", S.split(""));
+ *
+ * assertEquals(x, ["hello", "world"]);
+ * assertEquals(y, ["h", "e", "l", "l", "o"]);
+ * ```
+ */
+export function split(str: string, delimiter: string): string[];
+export function split(delimiter: string): (str: string) => string[];
+export function split(
+  strOrDelimiter: string,
+  delimiter?: string
+): string[] | ((str: string) => string[]) {
+  if (arguments.length === 1) {
+    return (_str: string) => split(_str, strOrDelimiter);
+  }
+
+  return strOrDelimiter.split(delimiter!);
+}
