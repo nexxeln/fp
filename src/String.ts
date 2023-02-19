@@ -31,34 +31,6 @@ export function append(
 }
 
 /**
- * Returns true if the string ends with the given substring or false otherwise.
- *
- * @param str - String to check
- * @param substr - String to check if it is at the end of the string
- *
- * @example
- * ```
- * const x = pipe("Hello World!", S.endsWith("!"));
- * const y = pipe("Hello World!", S.endsWith("!!"));
- *
- * assertEquals(x, true);
- * assertEquals(y, false);
- * ```
- */
-export function endsWith(str: string, substr: string): boolean;
-export function endsWith(substr: string): (str: string) => boolean;
-export function endsWith(
-  strOrSuffix: string,
-  substr?: string
-): boolean | ((str: string) => boolean) {
-  if (arguments.length === 1) {
-    return (_str: string) => endsWith(_str, strOrSuffix);
-  }
-
-  return strOrSuffix.endsWith(substr!);
-}
-
-/**
  * Returns a new string with the first character capitalized.
  *
  * @param str - String to capitalize
@@ -118,6 +90,34 @@ export function charAt(
   return n! >= 0 && n! < (stringOrN as string).length
     ? some((stringOrN as string).charAt(n!))
     : none;
+}
+
+/**
+ * Returns true if the string ends with the given substring or false otherwise.
+ *
+ * @param str - String to check
+ * @param substr - String to check if it is at the end of the string
+ *
+ * @example
+ * ```
+ * const x = pipe("Hello World!", S.endsWith("!"));
+ * const y = pipe("Hello World!", S.endsWith("!!"));
+ *
+ * assertEquals(x, true);
+ * assertEquals(y, false);
+ * ```
+ */
+export function endsWith(str: string, substr: string): boolean;
+export function endsWith(substr: string): (str: string) => boolean;
+export function endsWith(
+  strOrSuffix: string,
+  substr?: string
+): boolean | ((str: string) => boolean) {
+  if (arguments.length === 1) {
+    return (_str: string) => endsWith(_str, strOrSuffix);
+  }
+
+  return strOrSuffix.endsWith(substr!);
 }
 
 /**
