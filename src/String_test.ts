@@ -176,3 +176,14 @@ Deno.test("String - toArray", () => {
   assertEquals(x, ["H", "e", "l", "o", " ", "W", "r", "d", "!"]);
   assertEquals(y, []);
 });
+
+Deno.test("String - toLower, toUpper", () => {
+  const str = "Hello World!";
+
+  const x = pipe(str, S.toLower);
+  const y = pipe(str, S.toUpper);
+
+  assertEquals(str, "Hello World!");
+  assertEquals(x, "hello world!");
+  assertEquals(y, "HELLO WORLD!");
+});

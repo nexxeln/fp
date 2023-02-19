@@ -481,6 +481,38 @@ export function toArray(str: string): string[] {
 }
 
 /**
+ * Returns a new string with all characters converted to lowercase.
+ *
+ * @param str - String to convert to lowercase
+ *
+ * @example
+ * ```
+ * const x = pipe("Hello", S.toLower);
+ *
+ * assertEquals(x, "hello");
+ * ```
+ */
+export function toLower(str: string): string {
+  return str.toLowerCase();
+}
+
+/**
+ * Returns a new string with all characters converted to lowercase.
+ *
+ * @param str - String to convert to lowercase
+ *
+ * @example
+ * ```
+ * const x = pipe("Hello", S.toUpper);
+ *
+ * assertEquals(x, "HELLO");
+ * ```
+ */
+export function toUpper(str: string): string {
+  return str.toUpperCase();
+}
+
+/**
  * Returns a new string with whitespaces trimmed from the start and end of the string.
  *
  * @param str - String to trim
