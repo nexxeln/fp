@@ -403,3 +403,35 @@ export function split(
 
   return strOrDelimiter.split(delimiter!);
 }
+
+/**
+ * splitAt
+ * Returns an array of two strings split at the index, the first string being the characters before the index and the second string being the characters at and after the index.
+ *
+ * @param str - String to split
+ * @param index - Index to split the string at
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.splitAt(2));
+ * const y = pipe("hello", S.splitAt(0));
+ *
+ * assertEquals(x, ["he", "llo"]);
+ * assertEquals(y, ["", "hello"]);
+ * ```
+ */
+export function splitAt(str: string, index: number): [string, string];
+export function splitAt(index: number): (str: string) => [string, string];
+export function splitAt(
+  strOrIndex: string | number,
+  index?: number
+): [string, string] | ((str: string) => [string, string]) {
+  if (arguments.length === 1) {
+    return (_str: string) => splitAt(_str, strOrIndex as number);
+  }
+
+  return [
+    (strOrIndex as string).slice(0, index!),
+    (strOrIndex as string).slice(index!),
+  ];
+}

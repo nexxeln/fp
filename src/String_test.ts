@@ -137,3 +137,13 @@ Deno.test("String - split", () => {
   assertEquals(x, ["Hello", "World!"]);
   assertEquals(y, ["Hell", " W", "rld!"]);
 });
+
+Deno.test("String - splitAt", () => {
+  const x = pipe("Hello World!", S.splitAt(5));
+  const y = pipe("Hello World!", S.splitAt(12));
+  const z = pipe("Hello World!", S.splitAt(0));
+
+  assertEquals(x, ["Hello", " World!"]);
+  assertEquals(y, ["Hello World!", ""]);
+  assertEquals(z, ["", "Hello World!"]);
+});
