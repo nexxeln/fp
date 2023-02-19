@@ -89,6 +89,25 @@ export function charAt(
 }
 
 /**
+ * Removes [diacritical marks](https://en.wikipedia.org/wiki/Diacritic) from a string.
+ *
+ * @param str - String to deburr
+ *
+ * @example
+ * ```
+ * const x = pipe("déjà vu", S.deburr);
+ *
+ * assertEquals(x, "deja vu");
+ * ```
+ */
+export function deburr(str: string): string {
+  // deno-lint-ignore no-control-regex
+  return str.replace(/[^\u0000-\u007E]/g, (chr: string) =>
+    chr.normalize("NFD").replace(/[\u0300-\u036F]/g, "")
+  );
+}
+
+/**
  * Returns an Option of Some type of the first character of the string or None if the string is empty.
  *
  * @param str - String to check

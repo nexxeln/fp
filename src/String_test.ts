@@ -209,3 +209,12 @@ Deno.test("String - lines", () => {
   assertEquals(x, ["Hello", "World!", "nice hahahha", "lollllllllll"]);
   assertEquals(y, []);
 });
+
+Deno.test("String - deburr", () => {
+  const str = "déjà vu";
+
+  const x = pipe(str, S.deburr);
+
+  assertEquals(str, "déjà vu");
+  assertEquals(x, "deja vu");
+});
