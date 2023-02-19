@@ -95,3 +95,13 @@ Deno.test("String - remove", () => {
   assertEquals(y, "Hello World!");
   assertEquals(z, " Bonjour Hello");
 });
+
+Deno.test("String - removeAll", () => {
+  const x = pipe("Hello World!", S.removeAll("Hello"));
+  const y = pipe("Hello World!", S.removeAll("Goodbye"));
+  const z = pipe("Hello Bonjour Hello", S.removeAll("Hello"));
+
+  assertEquals(x, " World!");
+  assertEquals(y, "Hello World!");
+  assertEquals(z, " Bonjour ");
+});

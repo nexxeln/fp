@@ -231,7 +231,7 @@ export function prepend(
 }
 
 /**
- * Returns a new string witht he first occurence of the substring removed.
+ * Returns a new string with the first occurence of the substring removed from the string.
  *
  * @param str - String to remove the substring from
  * @param substr - String to remove
@@ -256,4 +256,33 @@ export function remove(
   }
 
   return strOrSuffix.replace(substr!, "");
+}
+
+/**
+ * removeAll
+ * Returns a new string with all occurences of the substring removed from the string.
+ *
+ * @param str - String to remove the substring from
+ * @param substr - String to remove
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.removeAll("ell"));
+ * const y = pipe("hello hi hello", S.removeAll("hello"));
+ *
+ * assertEquals(x, "ho");
+ * assertEquals(y, " hi ");
+ * ```
+ */
+export function removeAll(str: string, substr: string): string;
+export function removeAll(substr: string): (str: string) => string;
+export function removeAll(
+  strOrSuffix: string,
+  substr?: string
+): string | ((str: string) => string) {
+  if (arguments.length === 1) {
+    return (_str: string) => removeAll(_str, strOrSuffix);
+  }
+
+  return strOrSuffix.replace(new RegExp(substr!, "g"), "");
 }
