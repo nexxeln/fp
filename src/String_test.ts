@@ -85,3 +85,13 @@ Deno.test("String - prepend", () => {
   assertEquals(S.prepend(x, y), "WorldHello");
   assertEquals(z, "!World Hello");
 });
+
+Deno.test("String - remove", () => {
+  const x = pipe("Hello World!", S.remove("Hello"));
+  const y = pipe("Hello World!", S.remove("Goodbye"));
+  const z = pipe("Hello Bonjour Hello", S.remove("Hello"));
+
+  assertEquals(x, " World!");
+  assertEquals(y, "Hello World!");
+  assertEquals(z, " Bonjour Hello");
+});

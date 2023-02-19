@@ -229,3 +229,31 @@ export function prepend(
 
   return prefix + strOrPrefix;
 }
+
+/**
+ * Returns a new string witht he first occurence of the substring removed.
+ *
+ * @param str - String to remove the substring from
+ * @param substr - String to remove
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.remove("ell"));
+ * const y = pipe("hello hi hello", S.remove("hello"));
+ *
+ * assertEquals(x, "ho");
+ * assertEquals(y, " hi hello");
+ * ```
+ */
+export function remove(str: string, substr: string): string;
+export function remove(substr: string): (str: string) => string;
+export function remove(
+  strOrSuffix: string,
+  substr?: string
+): string | ((str: string) => string) {
+  if (arguments.length === 1) {
+    return (_str: string) => remove(_str, strOrSuffix);
+  }
+
+  return strOrSuffix.replace(substr!, "");
+}
