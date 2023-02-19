@@ -594,3 +594,18 @@ Deno.test("Array - dropWhile", () => {
   assertEquals(x, [3, 4, 5]);
   assertEquals(y, [{ id: 3 }, { id: 4 }, { id: 5 }, { id: 2 }]);
 });
+
+Deno.test("Array - takeWhile", () => {
+  const x = pipe(
+    [1, 2, 3, 4, 5],
+    A.takeWhile((n) => n < 3)
+  );
+
+  const y = pipe(
+    [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 2 }],
+    A.takeWhile((n) => n.id < 3)
+  );
+
+  assertEquals(x, [1, 2]);
+  assertEquals(y, [{ id: 1 }, { id: 2 }]);
+});

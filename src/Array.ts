@@ -1035,6 +1035,38 @@ export function take<T>(
 }
 
 /**
+ * takeWhile
+ * Returns a new array with all elements taken from the beginning of the array until the first element that does not satisfy the predicate.
+ *
+ * @param array
+ * @param predicate
+ *
+ * @example
+ * ```
+ * const x = pipe([1, 2, 3, 4, 5], A.takeWhile((n) => n < 3));
+ *
+ * assertEquals(x, [1, 2]);
+ * ```
+ */
+export function takeWhile<T>(array: T[], predicate: (a: T) => boolean): T[];
+export function takeWhile<T>(predicate: (a: T) => boolean): (array: T[]) => T[];
+export function takeWhile<T>(
+  arrayOrPredicate: T[] | ((a: T) => boolean),
+  predicate?: (a: T) => boolean
+): T[] | ((array: T[]) => T[]) {
+  if (arguments.length === 1) {
+    return (array: T[]) =>
+      takeWhile(array, arrayOrPredicate as (a: T) => boolean);
+  }
+
+  const index = (arrayOrPredicate as T[]).findIndex((x) => !predicate!(x));
+
+  return index === -1
+    ? (arrayOrPredicate as T[])
+    : (arrayOrPredicate as T[]).slice(0, index);
+}
+
+/**
  * Retuns an Option of Some type of a tuple with the first element of the array (head) and the rest of the array (tail). None is returned if the array is empty.
  *
  * @param array - The array to operate on
