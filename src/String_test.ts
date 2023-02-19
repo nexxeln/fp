@@ -224,3 +224,9 @@ Deno.test("String - capitalize", () => {
 
   assertEquals(x, "Hello world");
 });
+
+Deno.test("String - capitalizeAll", () => {
+  const x = pipe("hello world", S.capitalizeAll);
+
+  assertEquals(x, "Hello World");
+});

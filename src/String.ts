@@ -75,6 +75,22 @@ export function capitalize(str: string): string {
 }
 
 /**
+ * Returns a new string with all the words capitalized.
+ *
+ * @param str - String to capitalize all words
+ *
+ * @example
+ * ```
+ * const x = pipe("hello world", S.capitalizeAll);
+ *
+ * assertEquals(x, "Hello World");
+ * ```
+ */
+export function capitalizeAll(str: string): string {
+  return str.split(" ").map(capitalize).join(" ");
+}
+
+/**
  * Returns an Option of Some type of the character at the given index or None if the index is out of bounds.
  *
  * @param str - String to check
