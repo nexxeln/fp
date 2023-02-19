@@ -37,3 +37,11 @@ Deno.test("String - head", () => {
   assertEquals(x, "H");
   assertEquals(y, "Not Found");
 });
+
+Deno.test("String - inclues", () => {
+  const x = pipe("Hello World!", S.includes("Hello"));
+  const y = pipe("Hello World!", S.includes("Goodbye"));
+
+  assertEquals(x, true);
+  assertEquals(y, false);
+});

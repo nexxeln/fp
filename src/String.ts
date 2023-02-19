@@ -20,14 +20,14 @@ import { none, Option, some } from "./Option.ts";
 export function append(str: string, suffix: string): string;
 export function append(suffix: string): (str: string) => string;
 export function append(
-  str: string,
+  strOrSuffix: string,
   suffix?: string
 ): string | ((str: string) => string) {
   if (arguments.length === 1) {
-    return (_str: string) => append(_str, str);
+    return (_str: string) => append(_str, strOrSuffix);
   }
 
-  return str + suffix;
+  return strOrSuffix + suffix;
 }
 
 /**
@@ -48,14 +48,14 @@ export function append(
 export function endsWith(str: string, substr: string): boolean;
 export function endsWith(substr: string): (str: string) => boolean;
 export function endsWith(
-  str: string,
+  strOrSuffix: string,
   substr?: string
 ): boolean | ((str: string) => boolean) {
   if (arguments.length === 1) {
-    return (_str: string) => endsWith(_str, str);
+    return (_str: string) => endsWith(_str, strOrSuffix);
   }
 
-  return str.endsWith(substr!);
+  return strOrSuffix.endsWith(substr!);
 }
 
 /**
@@ -104,4 +104,32 @@ export function charAt(
  */
 export function head(str: string): Option<string> {
   return str === "" ? none : some(str[0]);
+}
+
+/**
+ * Returns true if the string contains the given substring or false otherwise.
+ *
+ * @param str - String to check
+ * @param substr - String to check if it is in the string
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.includes("hell"));
+ * const y = pipe("hello", S.includes("!"));
+ *
+ * assertEquals(x, true);
+ * assertEquals(y, false);
+ * ```
+ */
+export function includes(str: string, substr: string): boolean;
+export function includes(substr: string): (str: string) => boolean;
+export function includes(
+  strOrSuffix: string,
+  substr?: string
+): boolean | ((str: string) => boolean) {
+  if (arguments.length === 1) {
+    return (_str: string) => includes(_str, strOrSuffix);
+  }
+
+  return strOrSuffix.includes(substr!);
 }
