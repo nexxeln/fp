@@ -29,3 +29,11 @@ Deno.test("String - charAt", () => {
   assertEquals(x, "H");
   assertEquals(y, "Not Found");
 });
+
+Deno.test("String - head", () => {
+  const x = pipe("Hello World!", S.head, O.unwrapOr("Not Found"));
+  const y = pipe("", S.head, O.unwrapOr("Not Found"));
+
+  assertEquals(x, "H");
+  assertEquals(y, "Not Found");
+});

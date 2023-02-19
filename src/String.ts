@@ -87,3 +87,21 @@ export function charAt(
     ? some((stringOrN as string).charAt(n!))
     : none;
 }
+
+/**
+ * Returns an Option of Some type of the first character of the string or None if the string is empty.
+ *
+ * @param str - String to check
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.head, O.unwrapOr("nope"));
+ * const y = pipe("", S.head, O.unwrapOr("nope"));
+ *
+ * assertEquals(x, "h");
+ * assertEquals(y, "nope");
+ * ```
+ */
+export function head(str: string): Option<string> {
+  return str === "" ? none : some(str[0]);
+}
