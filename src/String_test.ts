@@ -12,3 +12,11 @@ Deno.test("String - append", () => {
   assertEquals(S.append(x, y), "HelloWorld");
   assertEquals(z, "Hello World!");
 });
+
+Deno.test("String - endsWith", () => {
+  const x = pipe("Hello World!", S.endsWith("!"));
+  const y = pipe("Hello World!", S.endsWith("!!"));
+
+  assertEquals(x, true);
+  assertEquals(y, false);
+});
