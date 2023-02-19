@@ -1064,6 +1064,46 @@ export function uniq<T>(array: T[]): T[] {
 }
 
 /**
+ * Returns a new array with all duplicate elements removed based on the result of the function.
+ *
+ * @param array - The array to operate on
+ * @param fn - The function to apply to each element of the array
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 1 }, { id: 2 }]
+ *   A.uniqBy((a) => a.id)
+ * );
+ *
+ * assertEquals(x, [{ id: 1 }, { id: 2 }, { id: 3 }]);
+ * ```
+ */
+export function uniqBy<T, U>(array: T[], fn: (a: T) => U): T[];
+export function uniqBy<T, U>(fn: (a: T) => U): (array: T[]) => T[];
+export function uniqBy<T, U>(
+  arrayOrF: T[] | ((a: T) => U),
+  fn?: (a: T) => U
+): T[] | ((array: T[]) => T[]) {
+  if (arguments.length === 1) {
+    return (array: T[]) => uniqBy(array, arrayOrF as (a: T) => U);
+  }
+
+  const seen = new Set<U>();
+
+  return (arrayOrF as T[]).filter((a) => {
+    const u = fn!(a);
+
+    if (seen.has(u)) {
+      return false;
+    }
+
+    seen.add(u);
+    return true;
+  });
+}
+
+/**
  * Returns a string of all elements of the array joined by newlines. Has the inverse effect of S.lines()
  *
  * @param array - The array to operate on

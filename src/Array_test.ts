@@ -567,3 +567,15 @@ Deno.test("Array - unwords", () => {
   assertEquals(x, ["a", "b", "c"]);
   assertEquals(y, "hello world deno");
 });
+
+Deno.test("Array - uniqBy", () => {
+  const x = pipe(
+    [{ id: 1 }, { id: 2 }, { id: 1 }, { id: 3 }],
+    A.uniqBy((a) => a.id)
+  );
+
+  const y = A.uniqBy(["a", "b", "c", "a", "b"], (a) => a);
+
+  assertEquals(x, [{ id: 1 }, { id: 2 }, { id: 3 }]);
+  assertEquals(y, ["a", "b", "c"]);
+});
