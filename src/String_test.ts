@@ -123,3 +123,9 @@ Deno.test("String - replaceAll", () => {
   assertEquals(y, "Hello World!");
   assertEquals(z, "Goodbye Bonjour Goodbye");
 });
+
+Deno.test("String - reverse", () => {
+  const x = pipe("Hello World!", S.reverse);
+
+  assertEquals(x, "!dlroW olleH");
+});

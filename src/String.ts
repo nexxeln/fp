@@ -359,3 +359,19 @@ export function replaceAll(
 
   return strOrSuffix.replaceAll(substrOrReplacement, replacement!);
 }
+
+/**
+ * Returns a new string with it's characters reversed.
+ *
+ * @param str - String to reverse
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.reverse);
+ *
+ * assertEquals(x, "olleh");
+ * ```
+ */
+export function reverse(str: string): string {
+  return str.split("").reverse().join("");
+}
