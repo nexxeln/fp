@@ -1,3 +1,5 @@
+import { none, Option, some } from "./Option.ts";
+
 /**
  * Returns a string with the suffix appended at the end of the string.
  *
@@ -24,6 +26,7 @@ export function append(
   if (arguments.length === 1) {
     return (_str: string) => append(_str, str);
   }
+
   return str + suffix;
 }
 
@@ -51,5 +54,36 @@ export function endsWith(
   if (arguments.length === 1) {
     return (_str: string) => endsWith(_str, str);
   }
+
   return str.endsWith(substr!);
+}
+
+/**
+ * Returns an Option of Some type of the character at the given index or None if the index is out of bounds.
+ *
+ * @param str - String to check
+ * @param n - Index of the character to return
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.charAt(0), O.unwrapOr("nope"));
+ * const y = pipe("hello", S.charAt(12), O.unwrapOr("nope"));
+ *
+ * assertEquals(x, "h");
+ * assertEquals(y, "nope");
+ * ```
+ */
+export function charAt(str: string, n: number): Option<string>;
+export function charAt(n: number): (str: string) => Option<string>;
+export function charAt(
+  stringOrN: string | number,
+  n?: number
+): Option<string> | ((str: string) => Option<string>) {
+  if (arguments.length === 1) {
+    return (str: string) => charAt(str, stringOrN as number);
+  }
+
+  return n! >= 0 && n! < (stringOrN as string).length
+    ? some((stringOrN as string).charAt(n!))
+    : none;
 }
