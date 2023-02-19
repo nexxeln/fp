@@ -105,3 +105,21 @@ Deno.test("String - removeAll", () => {
   assertEquals(y, "Hello World!");
   assertEquals(z, " Bonjour ");
 });
+
+Deno.test("String - replace", () => {
+  const x = pipe("Hello World!", S.replace("Hello", "Goodbye"));
+  const y = pipe("Hello World!", S.replace("Goodbye", "Hello"));
+
+  assertEquals(x, "Goodbye World!");
+  assertEquals(y, "Hello World!");
+});
+
+Deno.test("String - replaceAll", () => {
+  const x = pipe("Hello World!", S.replaceAll("Hello", "Goodbye"));
+  const y = pipe("Hello World!", S.replaceAll("Goodbye", "Hello"));
+  const z = pipe("Hello Bonjour Hello", S.replaceAll("Hello", "Goodbye"));
+
+  assertEquals(x, "Goodbye World!");
+  assertEquals(y, "Hello World!");
+  assertEquals(z, "Goodbye Bonjour Goodbye");
+});

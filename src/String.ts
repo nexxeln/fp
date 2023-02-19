@@ -284,5 +284,78 @@ export function removeAll(
     return (_str: string) => removeAll(_str, strOrSuffix);
   }
 
-  return strOrSuffix.replace(new RegExp(substr!, "g"), "");
+  return strOrSuffix.replaceAll(substr!, "");
+}
+
+/**
+ * Returns a new string with the first occurence of the substring replaced with the replacement string.
+ *
+ * @param str - String to replace the substring in
+ * @param substr - String to replace
+ * @param replacement - String to replace the substring with
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.replace("ell", "ipp"));
+ * const y = pipe("hello hi hello", S.replace("hello", "bye"));
+ *
+ * assertEquals(x, "hippo");
+ * assertEquals(y, "bye hi hello");
+ * ```
+ */
+export function replace(
+  str: string,
+  substr: string,
+  replacement: string
+): string;
+export function replace(
+  substr: string,
+  replacement: string
+): (str: string) => string;
+export function replace(
+  strOrSuffix: string,
+  substrOrReplacement: string,
+  replacement?: string
+): string | ((str: string) => string) {
+  if (arguments.length === 2) {
+    return (_str: string) => replace(_str, strOrSuffix, substrOrReplacement);
+  }
+
+  return strOrSuffix.replace(substrOrReplacement, replacement!);
+}
+
+/**
+ * Returns a new string with all occurences of the substring replaced with the replacement string.
+ *
+ * @param str - String to replace the substring in
+ * @param substr - String to replace
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.replaceAll("ell", "ipp"));
+ * const y = pipe("hello hi hello", S.replaceAll("hello", "bye"));
+ *
+ * assertEquals(x, "hippo");
+ * assertEquals(y, "bye hi bye");
+ * ```
+ */
+export function replaceAll(
+  str: string,
+  substr: string,
+  replacement: string
+): string;
+export function replaceAll(
+  substr: string,
+  replacement: string
+): (str: string) => string;
+export function replaceAll(
+  strOrSuffix: string,
+  substrOrReplacement: string,
+  replacement?: string
+): string | ((str: string) => string) {
+  if (arguments.length === 2) {
+    return (_str: string) => replaceAll(_str, strOrSuffix, substrOrReplacement);
+  }
+
+  return strOrSuffix.replaceAll(substrOrReplacement, replacement!);
 }
