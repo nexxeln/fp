@@ -205,6 +205,22 @@ export function length(str: string): number {
 }
 
 /**
+ * Returns an array of strings split by line breaks. An empty array is returned if the string is empty.
+ *
+ * @param str - String to split
+ *
+ * @example
+ * ```
+ * const x = pipe("hello\nworld\r\n!", S.lines);
+ *
+ * assertEquals(x, ["hello", "world", "!"]);
+ * ```
+ */
+export function lines(str: string): string[] {
+  return str === "" ? [] : str.split(/\r\n|\n|\r/);
+}
+
+/**
  * Returns a new string with the prefix prepended to the beginning of the string.
  *
  * @param str - String to prepend to

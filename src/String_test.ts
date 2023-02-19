@@ -198,3 +198,14 @@ Deno.test("String - words", () => {
   assertEquals(x, ["Hello", "World!"]);
   assertEquals(y, []);
 });
+
+Deno.test("String - lines", () => {
+  const str = "Hello\nWorld!\nnice hahahha\r\nlollllllllll";
+
+  const x = pipe(str, S.lines);
+  const y = pipe("", S.lines);
+
+  assertEquals(str, "Hello\nWorld!\nnice hahahha\r\nlollllllllll");
+  assertEquals(x, ["Hello", "World!", "nice hahahha", "lollllllllll"]);
+  assertEquals(y, []);
+});
