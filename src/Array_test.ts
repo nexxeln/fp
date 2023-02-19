@@ -579,3 +579,18 @@ Deno.test("Array - uniqBy", () => {
   assertEquals(x, [{ id: 1 }, { id: 2 }, { id: 3 }]);
   assertEquals(y, ["a", "b", "c"]);
 });
+
+Deno.test("Array - dropWhile", () => {
+  const x = pipe(
+    [1, 2, 3, 4, 5],
+    A.dropWhile((n) => n < 3)
+  );
+
+  const y = pipe(
+    [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 2 }],
+    A.dropWhile((n) => n.id < 3)
+  );
+
+  assertEquals(x, [3, 4, 5]);
+  assertEquals(y, [{ id: 3 }, { id: 4 }, { id: 5 }, { id: 2 }]);
+});

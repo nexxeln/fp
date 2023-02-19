@@ -249,6 +249,48 @@ export function drop<T>(
 }
 
 /**
+ * Returns a new array with n elements dropped from the beginning of the array until the first element that does not satisfy the predicate.
+ *
+ * @param array - The array to operate on
+ * @param predicate - The predicate to test each element against
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.dropWhile((n) => n < 3)
+ * );
+ *
+ * assertEquals(x, [3, 4, 5]);
+ * ```
+ */
+export function dropWhile<T>(
+  array: T[],
+  predicate: (value: T, index: number) => boolean
+): T[];
+export function dropWhile<T>(
+  predicate: (value: T, index: number) => boolean
+): (array: T[]) => T[];
+export function dropWhile<T>(
+  arrayOrPredicate: T[] | ((value: T, index: number) => boolean),
+  predicate?: (value: T, index: number) => boolean
+): T[] | ((array: T[]) => T[]) {
+  if (arguments.length === 1) {
+    return (array: T[]) =>
+      dropWhile(
+        array,
+        arrayOrPredicate as (value: T, index: number) => boolean
+      );
+  }
+
+  const index = (arrayOrPredicate as T[]).findIndex(
+    (value, index) => !predicate!(value, index)
+  );
+
+  return index === -1 ? [] : (arrayOrPredicate as T[]).slice(index);
+}
+
+/**
  * Returns a new array containing the elements of the array that satisfy the predicate.
  *
  * @param array - The array to operate on
