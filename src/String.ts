@@ -187,3 +187,19 @@ export function isNonEmpty(str: string): boolean {
 export function last(str: string): Option<string> {
   return str === "" ? none : some(str[str.length - 1]);
 }
+
+/**
+ * Returns the length of the string.
+ *
+ * @param str - String to check
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.length);
+ *
+ * assertEquals(x, 5);
+ * ```
+ */
+export function length(str: string): number {
+  return str.length;
+}

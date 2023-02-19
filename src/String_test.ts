@@ -69,3 +69,9 @@ Deno.test("String - last", () => {
   assertEquals(x, "!");
   assertEquals(y, "Not Found");
 });
+
+Deno.test("String - length", () => {
+  const x = pipe("Hello World!", S.length);
+
+  assertEquals(x, 12);
+});
