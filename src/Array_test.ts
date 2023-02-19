@@ -609,3 +609,24 @@ Deno.test("Array - takeWhile", () => {
   assertEquals(x, [1, 2]);
   assertEquals(y, [{ id: 1 }, { id: 2 }]);
 });
+
+Deno.test("Array - filterMap", () => {
+  const x = pipe(
+    [1, 2, 3, 4, 5],
+    A.filterMap((n) => (n % 2 === 0 ? O.some(n) : O.none))
+  );
+
+  const y = pipe(
+    ["a", "b", "c", "d", "e"],
+    A.filterMap((n, i) => (i % 2 === 0 ? O.some(n) : O.none))
+  );
+
+  const z = pipe(
+    ["a", "b", "c", "d", "e"],
+    A.filterMap((n) => (n === "c" ? O.some(n) : O.none))
+  );
+
+  assertEquals(x, [2, 4]);
+  assertEquals(y, ["a", "c", "e"]);
+  assertEquals(z, ["c"]);
+});

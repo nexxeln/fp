@@ -1,4 +1,4 @@
-import { type Option, some, none } from "./Option.ts";
+import { type Option, some, none, match } from "./Option.ts";
 
 /**
  * Returns true if all elements in the array match the predicate, false otherwise.
@@ -329,6 +329,56 @@ export function filter<T>(
     : (arrayOrPredicate as T[]).filter((value, index) =>
         predicate!(value, index)
       );
+}
+
+/**
+ * filterMap
+ * Returns a new array containing the elements of the array that satisfy the predicate. The predicate function returns an Option, if the Option is Some, the value is included in the new array, if the Option is None, the value is excluded in the new array.
+ *
+ * @param array - The array to operate on
+ * @param fn - The predicate to filter the array with
+ *
+ * @example
+ * ```
+ * const x = pipe(
+ *   [1, 2, 3, 4, 5],
+ *   A.filterMap((n) => n % 2 === 0 ? O.some(n) : O.none)
+ * );
+ *
+ * const y = pipe(
+ *   ["a", "b", "c", "d", "e"],
+ *   A.filterMap((s, i) => i % 2 === 0 ? O.some(s) : O.none)
+ * );
+ *
+ * assertEquals(x, [2, 4]);
+ * assertEquals(y, ["a", "c", "e"]);
+ * ```
+ */
+export function filterMap<T, U>(
+  array: T[],
+  fn: (value: T, index: number) => Option<U>
+): U[];
+export function filterMap<T, U>(
+  fn: (value: T, index: number) => Option<U>
+): (array: T[]) => U[];
+export function filterMap<T, U>(
+  arrayOrFn: T[] | ((value: T, index: number) => Option<U>),
+  fn?: (value: T, index: number) => Option<U>
+): U[] | ((array: T[]) => U[]) {
+  if (arguments.length === 1) {
+    return (array: T[]) =>
+      filterMap(array, arrayOrFn as (value: T, index: number) => Option<U>);
+  }
+
+  return (arrayOrFn as T[]).reduce<U[]>((acc, value, index) => {
+    const result = fn!(value, index);
+
+    return match(
+      result,
+      (value) => [...acc, value],
+      () => acc
+    );
+  }, []);
 }
 
 /**
