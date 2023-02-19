@@ -75,3 +75,13 @@ Deno.test("String - length", () => {
 
   assertEquals(x, 12);
 });
+
+Deno.test("String - prepend", () => {
+  const x = "Hello";
+  const y = "World";
+
+  const z = pipe(x, S.prepend(" "), S.prepend(y), S.prepend("!"));
+
+  assertEquals(S.prepend(x, y), "WorldHello");
+  assertEquals(z, "!World Hello");
+});

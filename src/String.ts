@@ -203,3 +203,29 @@ export function last(str: string): Option<string> {
 export function length(str: string): number {
   return str.length;
 }
+
+/**
+ * Returns a new string with the prefix prepended to the beginning of the string.
+ *
+ * @param str - String to prepend to
+ * @param prefix - String to prepend
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.prepend("world"));
+ *
+ * assertEquals(x, "worldhello");
+ * ```
+ */
+export function prepend(str: string, prefix: string): string;
+export function prepend(prefix: string): (str: string) => string;
+export function prepend(
+  strOrPrefix: string,
+  prefix?: string
+): string | ((str: string) => string) {
+  if (arguments.length === 1) {
+    return (_str: string) => prepend(_str, strOrPrefix);
+  }
+
+  return prefix + strOrPrefix;
+}
