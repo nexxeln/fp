@@ -133,3 +133,39 @@ export function includes(
 
   return strOrSuffix.includes(substr!);
 }
+
+/**
+ * Returns true if the string is empty or false otherwise.
+ *
+ * @param str - String to check
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.isEmpty);
+ * const y = pipe("", S.isEmpty);
+ *
+ * assertEquals(x, false);
+ * assertEquals(y, true);
+ * ```
+ */
+export function isEmpty(str: string): boolean {
+  return str === "";
+}
+
+/**
+ * Returns true if the string is not empty or false otherwise.
+ *
+ * @param str - String to check
+ *
+ * @example
+ * ```
+ * const x = pipe("hello", S.isNonEmpty);
+ * const y = pipe("", S.isNonEmpty);
+ *
+ * assertEquals(x, true);
+ * assertEquals(y, false);
+ * ```
+ */
+export function isNonEmpty(str: string): boolean {
+  return str !== "";
+}

@@ -45,3 +45,19 @@ Deno.test("String - inclues", () => {
   assertEquals(x, true);
   assertEquals(y, false);
 });
+
+Deno.test("String - isEmpty", () => {
+  const x = pipe("Hello World!", S.isEmpty);
+  const y = pipe("", S.isEmpty);
+
+  assertEquals(x, false);
+  assertEquals(y, true);
+});
+
+Deno.test("String - isNonEmpty", () => {
+  const x = pipe("Hello World!", S.isNonEmpty);
+  const y = pipe("", S.isNonEmpty);
+
+  assertEquals(x, true);
+  assertEquals(y, false);
+});
