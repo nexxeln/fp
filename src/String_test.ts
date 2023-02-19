@@ -155,3 +155,15 @@ Deno.test("String - startsWith", () => {
   assertEquals(x, true);
   assertEquals(y, false);
 });
+
+Deno.test("String - trim, trimEnd, trimStart", () => {
+  const str = " Hello World! ";
+  const x = pipe(str, S.trim);
+  const y = pipe(str, S.trimEnd);
+  const z = pipe(str, S.trimStart);
+
+  assertEquals(str, " Hello World! ");
+  assertEquals(x, "Hello World!");
+  assertEquals(y, " Hello World!");
+  assertEquals(z, "Hello World! ");
+});

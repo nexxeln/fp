@@ -463,3 +463,51 @@ export function startsWith(
 
   return strOrPrefix.startsWith(prefix!);
 }
+
+/**
+ * Returns a new string with whitespaces trimmed from the start and end of the string.
+ *
+ * @param str - String to trim
+ *
+ * @example
+ * ```
+ * const x = pipe(" hello ", S.trim);
+ *
+ * assertEquals(x, "hello");
+ * ```
+ */
+export function trim(str: string): string {
+  return str.trim();
+}
+
+/**
+ * Returns a new string with whitespaces trimmed from the end of the string.
+ *
+ * @param str - String to trim
+ *
+ * @example
+ * ```
+ * const x = pipe(" hello ", S.trimEnd);
+ *
+ * assertEquals(x, " hello");
+ * ```
+ */
+export function trimEnd(str: string): string {
+  return str.trimEnd();
+}
+
+/**
+ * Returns a new string with whitespaces trimmed from the beginning of the string.
+ *
+ * @param str - String to trim
+ *
+ * @example
+ * ```
+ * const x = pipe(" hello ", S.trimStart);
+ *
+ * assertEquals(x, "hello ");
+ * ```
+ */
+export function trimStart(str: string): string {
+  return str.trimStart();
+}
