@@ -1,1 +1,155 @@
 # Function
+
+This module contains common function composition utilities.
+
+## pipe
+
+The `pipe` function is used to chain function calls together in a more readable way. It takes a list of functions and passes the result of the first function to the second, second function to the third, and so on. The result of the last function is returned.
+
+### Import
+
+```ts
+import { pipe } from "https://deno.land/x/fp_/Function.ts";
+```
+
+### Usage
+
+#### Basic Example
+
+```ts
+const length = (s: string): number => s.length;
+const double = (a: number): number => a * 2;
+
+const result = pipe(
+  "hi", // initial value
+  length, // "hi" is passed to `length` which returns 2
+  double // 2 is passed to `double` which returns 4
+);
+
+assertEquals(result, 4);
+```
+
+Here the `pipe` function is used to chain together the `length` and `double` functions. The `length` function is passed the initial value `"hi"` and returns `2`. The `double` function is passed `2` and returns `4`.
+
+#### Functions With Multiple Arguments (Currying)
+
+In the previous example, all of the functions just take one argument. What if we want to pass multiple arguments to a function? The `pipe` function can only pass one argument to a function, which is the output of the previous function. We can work around this by defining functions that take a single argument and return a function that takes the next argument. This is called [currying](https://en.wikipedia.org/wiki/Currying) which is a core concept in functional programming.
+
+Let's look at how we can implement a function to add two numbers together using currying.
+
+```ts
+// normal function
+function normalAdd(a: number, b: number) {
+  return a + b;
+}
+
+// curried function
+function curriedAdd(a: number) {
+  return (b: number) => a + b;
+}
+```
+
+The `curriedAdd` function takes one argument and returns a function that takes the next argument. The returned function then adds the two arguments together and returns the result. This can be made more concise by using an arrow function.
+
+```ts
+const add = (a: number) => (b: number) => a + b;
+```
+
+Now we can use the `add` function in our pipeline.
+
+```ts
+const length = (s: string): number => s.length;
+const double = (a: number): number => a * 2;
+const add = (a: number) => (b: number) => a + b;
+
+const result = pipe(
+  "hi", // initial value
+  length, // "hi" is passed to `length` which returns 2
+  double // 2 is passed to `double` which returns 4
+  add(5) // 4 is passed to add which then returns a function that takes the next argument (5) and returns 9
+);
+
+assertEquals(result, 9);
+```
+
+## compose
+
+The `compose` function is similar to the `pipe` function, but instead of returning the result of the pipelime, it chains all the functions passed to it into a single function.
+
+### Import
+
+```ts
+import { compose } from "https://deno.land/x/fp_/Function.ts";
+```
+
+### Usage
+
+#### Basic Example
+
+```ts
+const length = (s: string): number => s.length;
+const double = (a: number): number => a * 2;
+
+const lengthAndDouble = compose(length, double);
+
+const result = lengthAndDouble("hi");
+
+assertEquals(result, 4);
+```
+
+Here the `compose` function is used to chain together the `length` and `double` functions. The flow of the functions is the same as the `pipe` function. The `length` function is passed the initial value `"hi"` and returns `2`. The `double` function is passed `2` and returns `4`.
+
+#### Functions With Multiple Arguments (Currying)
+
+`compose` can be used with curried functions in the same way as `pipe`.
+
+```ts
+const length = (s: string): number => s.length;
+const double = (a: number): number => a * 2;
+const add = (a: number) => (b: number) => a + b;
+
+const lengthAndDoubleAndAdd = compose(length, double, add(5));
+
+const result = lengthAndDoubleAndAdd("hi");
+
+assertEquals(result, 9);
+```
+
+## pipe vs compose
+
+The `pipe` and `compose` functions are almost analogous to each other. The difference is that `pipe` takes any arbitrary value as it's first argument and passes it to a chain of functions and returns the result. `compose` takes a function as it's first argument and chains it with a chain of functions and returns a new function that can be called with any arbitrary value as long it matches the type of the first function.
+
+Use `pipe` when you just want the result of a value through a chain of functions. Always default to `pipe` unless you have a specific reason to use `compose`.
+
+So what are the reasons to use `compose`? Let's say we have a function called `sumTransform` that takes a list of numbers and returns the sum of the numbers after they have been transformed by a function.
+
+```ts
+const sumTransform = (numbers: number[], transform: (n: number) => number) =>
+  numbers.reduce((acc, n) => acc + transform(n), 0);
+```
+
+We can use `pipe` to pass the transform function to `sumTransform`.
+
+```ts
+const sum = sumTransform([1, 2, 3], (n) => pipe(n, double, add(1)));
+
+assertEquals(sum, 15);
+```
+
+But the problem with this is that we have to pass an anonymous function to use `pipe` inside of `sumTransform`. We also need to declare an extra variable `n` to hold the current number. Every extra variable is an extra thing to keep track of and can lead to bugs. This might seem like a small thing, but it can add up quickly in a large codebase.
+
+This is where `compose` comes in. We can use `compose` to pass the transform function to `sumTransform`.
+
+```ts
+const sum = sumTransform([1, 2, 3], compose(double, add(1)));
+
+assertEquals(sum, 15);
+```
+
+This is much cleaner and easier to read.
+
+### tl;dr
+
+- Use `pipe` when you just want the result of a value through a chain of functions.
+- Use `compose` when you want to pass a function to another function.
+- Always default to `pipe` unless you have a specific reason to use `compose`.
