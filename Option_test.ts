@@ -50,6 +50,33 @@ Deno.test("Option: fromFalsy", () => {
   assertEquals(O.fromFalsy(""), O.none);
 });
 
+Deno.test("Option: fromException", () => {
+  const tryCatch = (n: number) => {
+    if (n === 1) {
+      return 1;
+    } else {
+      throw new Error("error");
+    }
+  };
+
+  assertEquals(
+    O.fromException(() => tryCatch(1)),
+    O.some(1)
+  );
+
+  assertEquals(
+    O.fromException(() => 1),
+    O.some(1)
+  );
+
+  assertEquals(
+    O.fromException(() => {
+      throw new Error("error");
+    }),
+    O.none
+  );
+});
+
 Deno.test("Option: expect", () => {
   assertEquals(O.expect(O.some(1), "error"), 1);
   assertEquals(O.expect("error")(O.some(1)), 1);

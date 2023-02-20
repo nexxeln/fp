@@ -119,6 +119,28 @@ export const fromFalsy = <T>(value: T): Option<NonNullable<T>> =>
   value ? some(value as NonNullable<T>) : none;
 
 /**
+ * Returns a Some if the function does not throw an error. Otherwise, it returns a None. Direct replacement of try/catch.
+ *
+ * @param fn - The function to be executed
+ *
+ * @example
+ * ```
+ * const x = O.fromException(() => 3);
+ * const y = O.fromException(() => { throw new Error("error lol") });
+ *
+ * assertEquals(O.isSome(x), true);
+ * assertEquals(O.isNone(y), true);
+ * ```
+ */
+export function fromException<T>(fn: () => T): Option<T> {
+  try {
+    return some(fn());
+  } catch (_error) {
+    return none;
+  }
+}
+
+/**
  * Unwraps an Option, yielding the content of a Some. If the value is None, it will throw an error with the provided message.
  *
  * @param option - The option to be unwrapped
