@@ -1,1 +1,341 @@
-coming soon
+import { Callout } from "nextra-theme-docs";
+
+# Option
+
+This module contains an implementation of the `Option` type and it's associated functions.
+
+## What is the Option Type?
+
+The `Option` type allows you to represent the possibility of a value being present or absent. It is a way to deal with null values in a functional way. There are two types of `Option` values: `Some` and `None`. `Some` represents a value that is present, and `None` represents a value that is absent.
+
+`Option` is the same as the enum of the same name in [Rust](https://doc.rust-lang.org/std/option/enum.Option.html) or the Maybe monad in [Haskell](https://wiki.haskell.org/Maybe) where the `Some` type is called `Just` and the `None` type is called `Nothing`.
+
+## Why use Option?
+
+The Option type makes your code declarative and less verbose. It also makes your code more robust and less error-prone by forcing you to deal with the possibility of a value being absent.
+
+## Usage
+
+### Import
+
+```ts
+import * as O from "https://deno.land/x/fp_/Option.ts";
+```
+
+### Primitives
+
+#### Some
+
+`Some` is a type that represents a value that is present.
+
+```ts
+type Some<T> = {
+  readonly type: "some";
+  readonly value: T;
+};
+```
+
+#### None
+
+```ts
+type None = {
+  readonly type: "none";
+};
+```
+
+#### Option
+
+`Option` is a union of the `Some` and `None` types.
+
+```ts
+type Option<T> = Some<T> | None;
+```
+
+You won't be using these types directly for the most part, but they are useful to know about.
+
+#### some
+
+The `some` constructor can be used to create an `Option` value of type `Some`.
+
+```ts
+const someValue = O.some(1);
+//     ^? const someValue: Option<number>
+```
+
+<Callout type="warning">
+  Only use the `some` constructor when you are sure that the value is present.
+</Callout>
+
+#### none
+
+`none` is constant of type `Option<never>`.
+
+```ts
+const noneValue = O.none;
+//     ^? const noneValue: Option<never>
+```
+
+### Creating an Option
+
+<Callout type="info">
+  The following examples use the `pipe` function from the `Function` module. If
+  you are not familiar with it, you can read more about it{" "}
+  [here](/function#pipe).
+</Callout>
+
+<Callout>
+  All the examples in this section have been kept as simple as possible so that
+  they are easy to understand. In real-world programs you won't be writing code
+  like this.
+</Callout>
+
+#### fromNullable
+
+`fromNullable` creates an `Option` value and depending on the value passed in, it will either be `Some` or `None`. If the value is `null` or `undefined`, it will be `None`, otherwise it will be `Some`.
+
+```ts
+const x = O.fromNullable(1);
+const y = O.fromNullable(null);
+const z = O.fromNullable("");
+
+assertEquals(O.isSome(x), true);
+assertEquals(O.isNone(y), true);
+assertEquals(O.isSome(z), true);
+```
+
+#### fromFalsy
+
+`fromFalsy` creates an `Option` value and depending on the value passed in, it will either be `Some` or `None`. If the value is [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy), it will be `None`, otherwise it will be `Some`.
+
+```ts
+const x = O.fromFalsy(1);
+const y = O.fromFalsy(null);
+const z = O.fromFalsy("");
+
+assertEquals(O.isSome(x), true);
+assertEquals(O.isNone(y), true);
+assertEquals(O.isNone(z), true);
+```
+
+#### fromException
+
+`fromException` takes a function that may throw an error and returns an `Option` value. If the function throws an error, the `Option` value will be `None`, otherwise it will be `Some`.
+
+```ts
+const throwIfNotOne = (x: number): number => {
+  if (x !== 1) {
+    throw new Error("x is not 1");
+  }
+
+  return x;
+};
+
+const x = O.fromException(() => throwIfNotOne(1));
+const y = O.fromException(() => throwIfNotOne(2));
+
+assertEquals(O.isSome(x), true);
+assertEquals(O.isNone(y), true);
+```
+
+<Callout>
+  `fromException` is a direct replacement for the `try`/`catch` statement.
+</Callout>
+
+### Checking an Option
+
+#### isOption
+
+`isOption` checks if an unknown value is an `Option`.
+
+```ts
+const x = O.fromNullable(1);
+const y = 1;
+
+assertEquals(O.isOption(x), true);
+assertEquals(O.isOption(y), false);
+```
+
+#### isSome
+
+`isSome` checks if an `Option` value is of type `Some`.
+
+```ts
+const x = O.fromNullable(1);
+const y = O.fromNullable(null);
+
+assertEquals(O.isSome(x), true);
+assertEquals(O.isSome(y), false);
+```
+
+#### isNone
+
+`isNone` checks if an `Option` value is of type `None`.
+
+```ts
+const x = O.fromNullable(1);
+const y = O.fromNullable(null);
+
+assertEquals(O.isNone(x), false);
+assertEquals(O.isNone(y), true);
+```
+
+### Getting the value of an Option
+
+#### unwrap
+
+`unwrap` yields the content of a `Some` value. If the value is `None`, it will throw an error.
+
+```ts
+const x = pipe(O.fromNullable(1), O.unwrap()); // x = 1
+
+const y = pipe(O.none, O.unwrap()); // throws an error
+```
+
+#### expect
+
+`expect` yields the content of a `Some` value. If the value is `None`, it will throw an error with the message provided as an argument. It's the same as `unwrap` except that it allows you to provide a custom error message.
+
+```ts
+const x = pipe(O.some(1), O.expect("This should not happen"));
+// x = 1
+
+const y = pipe(O.none, O.expect("This should happen"));
+// throws an error with the message "This should happen"
+```
+
+#### unwrapOr
+
+`unwrapOr` yields the content of a `Some` value. If the value is `None`, it will return the value provided as an argument. It doesn't throw an error.
+
+```ts
+const x = pipe(O.fromNullable(1), O.unwrapOr(0)); // unwraps some(1) to 1
+const y = pipe(O.fromNullable(null), O.unwrapOr(0)); // unwraps none to default value 0
+
+assertEquals(x, 1);
+assertEquals(y, 0);
+```
+
+#### unwrapOrElse
+
+`unwrapOrElse` yields the content of a `Some` value. If the value is `None`, it will return the value provided as a function. It doesn't throw an error. It's similar to `unwrapOr` except that it allows you to provide a function that returns the default value so that the default value is evaluated only when needed. This is called lazy evaluation.
+
+```ts
+const x = pipe(
+  O.fromNullable(1),
+  O.unwrapOrElse(() => 0)
+); // unwraps some(1) to 1
+
+const y = pipe(
+  O.fromNullable(null),
+  O.unwrapOrElse(() => 0)
+); // unwraps none to lazily evaluated default value 0
+```
+
+### Operations on an Option
+
+#### map
+
+`map` is used to apply a function to the content of a `Some` value. If the value is `None` it leaves it untouched.
+
+```ts
+const x = pipe(
+  O.fromNullable(1),
+  O.map((n) => n + 1),
+  O.unwrapOr(0)
+);
+
+const y = pipe(
+  O.fromNullable(null),
+  O.map((n) => n + 1),
+  O.unwrapOr(0)
+);
+
+assertEquals(x, 2);
+assertEquals(y, 0);
+```
+
+#### flatMap
+
+The `flatMap` function is similar to the `map` function, but it allows you to return an `Option` from the function that you pass in. It's useful when you want to compose multiple `Option` values.
+
+For example, if you have a function that returns an `Option` value and you want to call another function that also returns an `Option` value, you can use `flatMap` to compose the two functions.
+
+```ts
+const withMap = pipe(
+  O.fromNullable(1),
+  O.map((n) => O.fromNullable(n + 1))
+); // O.Option<O.Option<number>>
+
+const withFlatMap = pipe(
+  O.fromNullable(1),
+  O.flatMap((n) => O.fromNullable(n + 1))
+); // O.Option<number>
+```
+
+#### match
+
+`match` allows for pattern matching on an `Option`. It takes two functions as arguments, the first one is used if the value is `Some` and the second one is used if the value is `None`.
+
+```ts
+const x = pipe(
+  O.fromNullable(1),
+  O.match(
+    (n) => n + 1,
+    () => 0
+  )
+);
+
+const y = pipe(
+  O.fromNullable(null),
+  O.match(
+    (n) => n + 1,
+    () => 0
+  )
+);
+
+assertEquals(x, 2);
+assertEquals(y, 0);
+```
+
+#### tap
+
+`tap` allows you to perform a side effect on a `Some` value. It leaves a `None` value untouched.
+
+```ts
+const x = pipe(
+  O.fromNullable(1),
+  O.tap((n) => console.log(n))
+); // logs 1
+
+const y = pipe(
+  O.fromNullable(null),
+  O.tap((n) => console.log(n)),
+  O.unwrapOr(0)
+); // logs nothing
+```
+
+<Callout>
+  Side effects are generally discouraged in functional programming. Use `tap`
+  only if it is absolutely necessary.
+</Callout>
+
+#### zip
+
+`zip` allows you to combine two `Option` values into a tuple. If both values are `Some`, it will return a `Some` value containing a tuple of the two values. If either value is `None`, it will return `None`.
+
+```ts
+const x = pipe(
+  O.fromNullable("hello"),
+  O.zip(O.fromNullable("world")),
+  O.unwrapOr(["", ""])
+);
+
+const y = pipe(
+  O.fromNullable("hello"),
+  O.zip(O.fromNullable(null)),
+  O.unwrapOr(["", ""])
+);
+
+assertEquals(x, ["hello", "world"]);
+assertEquals(y, ["", ""]);
+```
