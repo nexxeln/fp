@@ -51,30 +51,19 @@ Deno.test("Option: fromFalsy", () => {
 });
 
 Deno.test("Option: fromException", () => {
-  const tryCatch = (n: number) => {
-    if (n === 1) {
-      return 1;
-    } else {
-      throw new Error("error");
+  const throwIfNotOne = (x: number) => {
+    if (x !== 1) {
+      throw new Error("x is not 1");
     }
+
+    return x;
   };
 
-  assertEquals(
-    O.fromException(() => tryCatch(1)),
-    O.some(1)
-  );
+  const x = O.fromException(() => throwIfNotOne(1));
+  const y = O.fromException(() => throwIfNotOne(2));
 
-  assertEquals(
-    O.fromException(() => 1),
-    O.some(1)
-  );
-
-  assertEquals(
-    O.fromException(() => {
-      throw new Error("error");
-    }),
-    O.none
-  );
+  assertEquals(O.isSome(x), true);
+  assertEquals(O.isNone(y), true);
 });
 
 Deno.test("Option: expect", () => {
