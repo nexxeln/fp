@@ -43,8 +43,9 @@ export function isOption<T>(value: unknown): value is Option<T> {
  * assertEquals(O.isSome(y), false);
  * ```
  */
-export const isSome = <T>(option: Option<T>): option is Some<T> =>
-  option.type === "some";
+export function isSome<T>(option: Option<T>): option is Some<T> {
+  return option.type === "some";
+}
 
 /**
  * Checks if an Option is of type None.
@@ -60,8 +61,9 @@ export const isSome = <T>(option: Option<T>): option is Some<T> =>
  * assertEquals(O.isNone(y), true);
  * ```
  */
-export const isNone = <T>(option: Option<T>): option is None =>
-  option.type === "none";
+export function isNone<T>(option: Option<T>): option is None {
+  return option.type === "none";
+}
 
 /**
  * Checks if an Option is of type None.
@@ -74,7 +76,9 @@ export const isNone = <T>(option: Option<T>): option is None =>
  * const someNull = O.some(null);
  * ```
  */
-export const some = <T>(value: T): Option<T> => ({ type: "some", value });
+export function some<T>(value: T): Option<T> {
+  return { type: "some", value };
+}
 
 /**
  * Constant to represent a value of None type.
@@ -96,10 +100,13 @@ export const none: Option<never> = { type: "none" };
  * assertEquals(O.isNone(y), true);
  * ```
  */
-export const fromNullable = <T>(
+export function fromNullable<T>(
   value: T | null | undefined
-): Option<NonNullable<T>> =>
-  value === null || value === undefined ? none : some(value as NonNullable<T>);
+): Option<NonNullable<T>> {
+  return value === null || value === undefined
+    ? none
+    : some(value as NonNullable<T>);
+}
 
 /**
  * Converts a value to an Option. If the value is falsy, it will be converted to a None type. Otherwise, it will be converted to a Some type.
@@ -115,8 +122,9 @@ export const fromNullable = <T>(
  * assertEquals(O.isNone(y), true);
  * ```
  */
-export const fromFalsy = <T>(value: T): Option<NonNullable<T>> =>
-  value ? some(value as NonNullable<T>) : none;
+export function fromFalsy<T>(value: T): Option<NonNullable<T>> {
+  return value ? some(value as NonNullable<T>) : none;
+}
 
 /**
  * Returns a Some if the function does not throw an error. Otherwise, it returns a None. Direct replacement of try/catch.
