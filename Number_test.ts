@@ -22,3 +22,9 @@ Deno.test("Number - odd", () => {
   assertEquals(pipe(2, N.odd), false);
   assertEquals(pipe(3, N.odd), true);
 });
+
+Deno.test("Number - lcm", () => {
+  assertEquals(N.lcm(2, 3), 6);
+  assertEquals(N.lcm(8, 12), 24);
+  assertEquals(N.lcm(8, -12), 24);
+});
