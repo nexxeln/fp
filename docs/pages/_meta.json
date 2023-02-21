@@ -2,6 +2,6 @@
   "index": "Introduction",
   "function": "Function",
   "option": "Option",
-  "string": "String",
-  "array": "Array"
+  "array": "Array",
+  "string": "String"
 }

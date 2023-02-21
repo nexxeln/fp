@@ -1,1 +1,32 @@
-coming soon
+import { Callout } from "nextra-theme-docs";
+
+# Array
+
+This module contains functions to work with arrays.
+
+## Usage
+
+### Import
+
+```ts
+import * as A from "https://deno.land/x/fp_/Array.ts";
+```
+
+### Functions
+
+#### all
+
+`all` takes a predicate function and an array and returns true if all elements of the array satisfy the predicate.
+
+<Callout>
+  `all` works exactly like
+  [`Array.prototype.every`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every)
+</Callout>
+
+```ts
+const isEven = (n: number) => n % 2 === 0;
+
+const x = pipe([2, 4, 6], A.all(isEven));
+
+assertEquals(x, true);
+```
