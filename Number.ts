@@ -17,6 +17,31 @@ export function even(n: number): boolean {
 }
 
 /**
+ * Returns the greatest common divisor of two numbers.
+ *
+ * @param a - The first number
+ * @param b - The second number
+ *
+ * @example
+ * ```
+ * const x = N.gcd(2, 3);
+ * const y = N.gcd(8, -12);
+ *
+ * assertEquals(x, 1);
+ * assertEquals(y, 4);
+ * ```
+ */
+export function gcd(a: number, b: number): number;
+export function gcd(b: number): (a: number) => number;
+export function gcd(a: number, b?: number): number | ((a: number) => number) {
+  if (b === undefined) return (b: number) => gcd(a, b);
+
+  if (b === 0) return a;
+
+  return Math.abs(gcd(b, a % b));
+}
+
+/**
  * Checks if a number is odd.
  *
  * @param n - The number to check
